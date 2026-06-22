@@ -157,6 +157,4 @@ The backend is a scaffold for future features such as:
 
 ---
 
-# MIT License
-
 All rights reserved © finLife
