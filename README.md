@@ -1,4 +1,4 @@
-# FinLife
+# FinLife 💸
 ### Learn finance by living it. Not memorizing it.
 
 **FinLife** is a mobile-first financial life simulator that transforms financial literacy from passive learning into an interactive experience. Instead of reading about budgeting, loans, investments, or fraud, players **live** through them.
