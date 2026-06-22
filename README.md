@@ -1,70 +1,162 @@
 # FinLife
+### Learn finance by living it. Not memorizing it.
 
-A mobile-first **financial life simulator** in 8-bit pixel-art style. Players make decisions at every life stage and watch decades of compound consequences unfold in seconds.
+**FinLife** is a mobile-first financial life simulator that transforms financial literacy from passive learning into an interactive experience. Instead of reading about budgeting, loans, investments, or fraud, players **live** through them.
 
-## Features
+Built as an immersive pixel-art game, FinLife lets players progress through different stages of life—from student years to retirement—making realistic financial decisions and instantly witnessing decades of consequences through a time-acceleration engine.
 
-- Cinematic 7-beat onboarding intro
-- Duolingo-style curved roadmap with 3 chapters (9 scenarios, 27 choices)
-- Narrated time-acceleration sequences with animated stats
-- Local-only save via AsyncStorage (no account required)
-- 8-bit synthesised SFX and pixel-art UI
+---
 
-## Tech stack
+# Why FinLife?
 
-| Layer    | Stack                                      |
-| -------- | ------------------------------------------ |
-| Mobile   | Expo SDK 54, React Native 0.81, expo-router |
-| State    | React context + AsyncStorage               |
-| Backend  | FastAPI + MongoDB (optional, unused by MVP) |
+Most financial literacy platforms focus on **teaching concepts**.
 
-## Getting started
+FinLife focuses on **training judgement.** Players experience how today's financial choices shape tomorrow's opportunities, stress, savings, and quality of life.
+By compressing decades into minutes, FinLife makes long-term financial consequences visible, understandable, and memorable.
 
-### Frontend (required)
+---
 
-```bash
-cd frontend
-npm install
-npm start
+# Gameplay
+
+Players journey through a structured life timeline where every chapter introduces new financial responsibilities and trade-offs.
+
+## Life Progression
+
+- Childhood Life
+- Higher Education
+- First Job
+- Independent Living
+- Family Responsibilities
+- Investments & Wealth Building
+- Retirement Planning
+
+Each stage contains interactive scenarios where players choose between multiple financial decisions.
+
+Examples include:
+
+- Budgeting vs Impulse Spending
+- Education Loans
+- Credit Card Usage
+- Emergency Funds
+- Investments
+- Insurance
+- Digital Payment Fraud
+- Lifestyle Inflation
+
+---
+
+# ⏳ Time Acceleration
+
+FinLife's core mechanic is its **Time Acceleration Engine**.
+
+Instead of waiting years to understand financial consequences, players watch months pass within seconds.
+
+The simulation dynamically updates:
+
+- 💰 Savings
+- 📈 Investments
+- 😌 Stress Level
+- ❤️ Health
+- 📊 Financial Stability
+
+Players immediately understand the long-term impact of every decision.
+
+# Technology Stack
+
+| Layer | Technology |
+|---------|------------|
+| Mobile | Expo SDK 54 |
+| Framework | React Native 0.81 |
+| Navigation | Expo Router |
+| State Management | React Context API |
+| Local Storage | AsyncStorage |
+| Design | Pixel-Art UI |
+| Audio | 8-bit Synthesized SFX |
+
+---
+
+# Architecture
+
+```
+                    Player
+                       │
+                       ▼
+                React Native App
+                       │
+        ┌──────────────┴──────────────┐
+        ▼                             ▼
+ Game Engine                 UI Components
+        │                             │
+        ▼                             ▼
+ Decision System           Pixel Interface
+        │
+        ▼
+ Time Acceleration Engine
+        │
+        ▼
+ Financial Simulation
+        │
+        ▼
+ AsyncStorage (Local Save)
+
 ```
 
-Then open in Expo Go, an emulator, or the web preview.
+---
 
-### Backend (optional)
-
-The current MVP runs entirely on-device. The backend is a scaffold for future features.
-
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-Create `backend/.env`:
-
-```
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=finlife
-```
-
-Run the server:
-
-```bash
-uvicorn server:app --reload
-```
-
-## Project structure
+# Project Structure
 
 ```
 finLife/
-├── frontend/          # Expo app (main product)
-│   ├── app/           # expo-router screens
-│   └── src/           # game logic, components, UI
-├── backend/           # FastAPI API scaffold
-└── memory/PRD.md      # Product requirements
+│
+├── frontend/
+│   ├── app/                 # Expo Router screens
+│   ├── assets/
+│   ├── components/
+│   ├── hooks/
+│   ├── contexts/
+│   ├── services/
+│   └── game/
+│
+└── README.md
 ```
 
-## License
+---
 
-Private — all rights reserved.
+# Getting Started
+
+## Frontend
+
+```bash
+cd frontend
+
+npm install
+
+npm start
+```
+
+Run using:
+
+- Expo Go
+- Android Emulator
+- iOS Simulator
+- Web Preview
+
+---
+
+## Backend
+
+The current MVP is **fully offline** and stores all progress locally.
+
+The backend is a scaffold for future features such as:
+
+- Cloud Saves
+- Leaderboards
+- Analytics
+- Personalized AI Feedback
+- Multiplayer Challenges
+
+---
+
+# MIT License
+
+All rights reserved © finLife
