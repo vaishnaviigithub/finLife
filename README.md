@@ -3,7 +3,7 @@
 
 **FinLife** is a mobile-first financial life simulator that transforms financial literacy from passive learning into an interactive experience. Instead of reading about budgeting, loans, investments, or fraud, players **live** through them.
 
-Built as an immersive pixel-art game, FinLife lets players progress through different stages of life—from student years to retirement—making realistic financial decisions and instantly witnessing decades of consequences through a time-acceleration engine.
+Built as an immersive pixel-art game, FinLife lets players progress through different stages of life, from student years to retirement, making realistic financial decisions and instantly witnessing decades of consequences through a time-acceleration engine.
 
 ---
 
