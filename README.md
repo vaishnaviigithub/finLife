@@ -1,6 +1,10 @@
 # FinLife 💸
 ### Learn finance by living it. Not memorizing it.
 
+web app link:https://finlife-game.netlify.app/
+mobile app link:https://expo.dev/accounts/vaishnavichada/projects/finlife/builds/50ca4e5e-742f-413e-a69f-47ce154ab115
+live demo link:
+
 **FinLife** is a mobile-first financial life simulator that transforms financial literacy from passive learning into an interactive experience. Instead of reading about budgeting, loans, investments, or fraud, players **live** through them.
 
 Built as an immersive pixel-art game, FinLife lets players progress through different stages of life, from student years to retirement, making realistic financial decisions and instantly witnessing decades of consequences through a time-acceleration engine.
