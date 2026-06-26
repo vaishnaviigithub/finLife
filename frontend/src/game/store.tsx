@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CHAPTERS } from './data';
 import { computeNewStreak, todayKey } from './streaks';
+import { setChapterStatusDone } from '../finlabs/storage';
 import { Chapter, Choice, GameState, Scenario, StatDelta } from './types';
 
 const STORAGE_KEY = '@finlife/state/v1';
@@ -195,6 +196,13 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
     if (!hydrated) return;
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(state)).catch(() => {});
   }, [state, hydrated]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    for (const id of state.chaptersCompleted) {
+      setChapterStatusDone(id).catch(() => {});
+    }
+  }, [state.chaptersCompleted, hydrated]);
 
   const value = useMemo<Ctx>(
     () => ({

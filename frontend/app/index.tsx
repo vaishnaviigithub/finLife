@@ -26,6 +26,9 @@ import Animated, {
 import { CHAPTERS, useGame } from '@/src/game/store';
 import { Chapter } from '@/src/game/types';
 import { C, FONT } from '@/src/ui/theme';
+import { FL_GREEN } from '@/src/finlabs/storage';
+import { finLabsRoadmapHref } from '@/src/finlabs/routes';
+import { getFinLabsChapter } from '@/src/finlabs/chapters';
 import { play } from '@/src/game/audio';
 import PixelAvatar from '@/src/components/PixelAvatar';
 import ArtifactImage from '@/src/components/ArtifactImage';
@@ -92,6 +95,7 @@ export default function Index() {
 
   const bob = useSharedValue(0);
   const blink = useSharedValue(1);
+  const finLabsPulse = useSharedValue(1);
   useEffect(() => {
     bob.value = withRepeat(
       withSequence(
@@ -104,10 +108,20 @@ export default function Index() {
       withSequence(withTiming(0.35, { duration: 500 }), withTiming(1, { duration: 500 })),
       -1,
     );
-  }, [bob, blink]);
+    finLabsPulse.value = withRepeat(
+      withSequence(
+        withTiming(1.06, { duration: 700, easing: Easing.inOut(Easing.quad) }),
+        withTiming(1, { duration: 700, easing: Easing.inOut(Easing.quad) }),
+      ),
+      -1,
+    );
+  }, [bob, blink, finLabsPulse]);
 
   const bobStyle = useAnimatedStyle(() => ({ transform: [{ translateY: bob.value }] }));
   const blinkStyle = useAnimatedStyle(() => ({ opacity: blink.value }));
+  const finLabsPulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: finLabsPulse.value }],
+  }));
 
   const currentChapterIdx = useMemo(() => {
     const idx = CHAPTERS.findIndex((c) => !state.chaptersCompleted.includes(c.id));
@@ -125,6 +139,12 @@ export default function Index() {
     play('bad');
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     reset();
+  };
+
+  const handleFinLabs = (ch: Chapter) => {
+    play('click');
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+    router.push(finLabsRoadmapHref(ch.id));
   };
 
   const handleReplayIntro = () => {
@@ -191,8 +211,11 @@ export default function Index() {
                 activeNodeIdx={activeNodeIdx}
                 bobStyle={bobStyle}
                 blinkStyle={blinkStyle}
+                finLabsPulseStyle={finLabsPulseStyle}
+                hasFinLabs={!!getFinLabsChapter(ch.id)}
                 canvasW={canvasW}
                 onPlay={() => !isLocked && handlePlay(ch)}
+                onFinLabs={() => handleFinLabs(ch)}
               />
             );
           })}
@@ -240,8 +263,11 @@ function ChapterSection({
   activeNodeIdx,
   bobStyle,
   blinkStyle,
+  finLabsPulseStyle,
+  hasFinLabs,
   canvasW,
   onPlay,
+  onFinLabs,
 }: {
   chapter: Chapter;
   completed: boolean;
@@ -250,8 +276,11 @@ function ChapterSection({
   activeNodeIdx: number;
   bobStyle: any;
   blinkStyle: any;
+  finLabsPulseStyle: any;
+  hasFinLabs: boolean;
   canvasW: number;
   onPlay: () => void;
+  onFinLabs: () => void;
 }) {
   const nodePositions = useMemo(
     () => getNodePositions(chapter.scenarios.length),
@@ -283,33 +312,52 @@ function ChapterSection({
             </Text>
           </View>
         </View>
-        <Pressable
-          disabled={isLocked}
-          onPress={onPlay}
-          style={({ pressed }) => [
-            styles.chapterAction,
-            completed && styles.chapterActionDone,
-            isLocked && styles.chapterActionLocked,
-            isCurrent && !completed && styles.chapterActionActive,
-            pressed && !isLocked && { opacity: 0.85 },
-          ]}
-        >
-          {completed ? (
-            <>
-              <MaterialCommunityIcons name="trophy" size={13} color="#000" />
-              <Text style={styles.chapterActionText}>DONE</Text>
-            </>
-          ) : isLocked ? (
-            <>
-              <MaterialCommunityIcons name="lock" size={13} color="#888" />
-              <Text style={[styles.chapterActionText, { color: '#888' }]}>LOCKED</Text>
-            </>
-          ) : (
-            <Animated.View style={[styles.playRow, blinkStyle]}>
-              <Text style={styles.chapterActionText}>▶ PLAY</Text>
-            </Animated.View>
-          )}
-        </Pressable>
+        <View style={styles.chapterActionsCol}>
+          <Pressable
+            disabled={isLocked}
+            onPress={onPlay}
+            style={({ pressed }) => [
+              styles.chapterAction,
+              completed && styles.chapterActionDone,
+              isLocked && styles.chapterActionLocked,
+              isCurrent && !completed && styles.chapterActionActive,
+              pressed && !isLocked && { opacity: 0.85 },
+            ]}
+          >
+            {completed ? (
+              <>
+                <MaterialCommunityIcons name="trophy" size={13} color="#000" />
+                <Text style={styles.chapterActionText}>DONE</Text>
+              </>
+            ) : isLocked ? (
+              <>
+                <MaterialCommunityIcons name="lock" size={13} color="#888" />
+                <Text style={[styles.chapterActionText, { color: '#888' }]}>LOCKED</Text>
+              </>
+            ) : (
+              <Animated.View style={[styles.playRow, blinkStyle]}>
+                <Text style={styles.chapterActionText}>▶ PLAY</Text>
+              </Animated.View>
+            )}
+          </Pressable>
+
+          {completed && hasFinLabs ? (
+            <Pressable
+              onPress={onFinLabs}
+              testID={`finlabs-btn-${chapter.id}`}
+              style={({ pressed }) => [
+                styles.finLabsBtn,
+                pressed && { opacity: 0.85, transform: [{ translateX: 1 }, { translateY: 1 }] },
+              ]}
+            >
+              <Animated.View style={[styles.finLabsInner, finLabsPulseStyle]}>
+                <Text style={styles.finLabsEmoji}>🧪</Text>
+                <Text style={styles.finLabsBtnText}>FIN LABS</Text>
+                <View style={styles.finLabsSpark} />
+              </Animated.View>
+            </Pressable>
+          ) : null}
+        </View>
       </View>
 
       <View style={[styles.canvas, { width: canvasW, height: CANVAS_H }]}>
@@ -609,15 +657,57 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginTop: 2,
   },
+  chapterActionsCol: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 6,
+    minWidth: 76,
+  },
   chapterAction: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     gap: 4,
     borderWidth: 2,
     borderColor: C.yellow,
     backgroundColor: '#111',
     paddingHorizontal: 10,
     paddingVertical: 6,
+    minWidth: 72,
+  },
+  finLabsBtn: {
+    borderWidth: 2,
+    borderColor: FL_GREEN,
+    backgroundColor: '#0a1a12',
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    minWidth: 72,
+    overflow: 'hidden',
+  },
+  finLabsInner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+  },
+  finLabsEmoji: {
+    fontSize: 11,
+  },
+  finLabsSpark: {
+    width: 6,
+    height: 6,
+    backgroundColor: FL_GREEN,
+    borderRadius: 1,
+    opacity: 0.85,
+  },
+  finLabsBtnText: {
+    fontFamily: FONT.display,
+    color: FL_GREEN,
+    fontSize: 7,
+    letterSpacing: 0.5,
+    textAlign: 'center',
   },
   chapterActionDone: {
     backgroundColor: C.green,
