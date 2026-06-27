@@ -47,9 +47,15 @@ const SCENARIO_ARTIFACTS: Record<string, ArtifactKey> = {
   c2s3: 'gift',
   c2s4: 'cafe',
   c2s5: 'job',
+  c2s6: 'scam',
+  c2s7: 'loan',
   c3s1: 'loan',
   c3s2: 'scam',
   c3s3: 'moneyStack',
+  c3s4: 'student',
+  c3s5: 'wallet',
+  c3s6: 'laptopBooks',
+  c3s7: 'moneyStack',
 };
 
 const CHAPTER_BG: Record<string, ArtifactKey> = {

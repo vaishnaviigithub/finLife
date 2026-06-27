@@ -3,9 +3,31 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CHAPTERS } from './data';
 import { computeNewStreak, todayKey } from './streaks';
 import { setChapterStatusDone } from '../finlabs/storage';
+import {
+  computeFinancialHealthScore,
+  getChapterTargetLength,
+  isBadChoice,
+  MIN_SCENARIOS,
+} from './scoring';
 import { Chapter, Choice, GameState, Scenario, StatDelta } from './types';
 
 const STORAGE_KEY = '@finlife/state/v1';
+
+const SCENARIO_ORDER_BY_CHAPTER: Record<string, string[]> = {
+  childhood: ['c1s4', 'c1s3', 'c1s2', 'c1s1', 'c1s5', 'c1s6'],
+};
+
+export function getOrderedChapterScenarios(chapter: Chapter): Scenario[] {
+  const order = SCENARIO_ORDER_BY_CHAPTER[chapter.id];
+  if (!order) return chapter.scenarios;
+
+  const ordered = order
+    .map((id) => chapter.scenarios.find((scenario) => scenario.id === id))
+    .filter((scenario): scenario is Scenario => !!scenario);
+  const orderedIds = new Set(ordered.map((scenario) => scenario.id));
+  const remaining = chapter.scenarios.filter((scenario) => !orderedIds.has(scenario.id));
+  return [...ordered, ...remaining];
+}
 
 const INITIAL: GameState = {
   age: 8,
@@ -25,6 +47,11 @@ const INITIAL: GameState = {
   lastStreakDate: null,
   pendingLessonDate: null,
   termsLearned: [],
+  financialHealthScore: 50,
+  consecutiveBadDecisions: 0,
+  chapterScenarioIds: [],
+  recentlyAddedScenarioIds: [],
+  chapterProgress: {},
 };
 
 type Action =
@@ -34,7 +61,23 @@ type Action =
   | { type: 'APPLY_CHOICE'; choice: Choice; scenario: Scenario }
   | { type: 'COMPLETE_CHAPTER'; chapter: Chapter }
   | { type: 'COMPLETE_STREAK_TERM'; termId: string }
-  | { type: 'COMPLETE_INTRO'; playerName: string };
+  | { type: 'COMPLETE_INTRO'; playerName: string }
+  | { type: 'CLEAR_RECENTLY_ADDED' };
+
+function appendBonusScenarios(
+  chapter: Chapter,
+  currentIds: string[],
+  targetLength: number,
+): { ids: string[]; added: string[] } {
+  if (targetLength <= currentIds.length) {
+    return { ids: currentIds, added: [] };
+  }
+  const bonusPool = getOrderedChapterScenarios(chapter).slice(MIN_SCENARIOS);
+  const needed = targetLength - currentIds.length;
+  const available = bonusPool.filter((s) => !currentIds.includes(s.id));
+  const toAdd = available.slice(0, needed).map((s) => s.id);
+  return { ids: [...currentIds, ...toAdd], added: toAdd };
+}
 
 function applyDelta(s: GameState, d: StatDelta): GameState {
   return {
@@ -72,14 +115,27 @@ function reducer(state: GameState, action: Action): GameState {
     case 'START_CHAPTER': {
       const ch = CHAPTERS.find((c) => c.id === action.chapterId);
       if (!ch) return state;
-      const startAge = ch.scenarios[0].age;
-      // Top-up small monthly allowance entering the chapter to keep gameplay flowing
+
+      if (
+        state.chapterId === action.chapterId &&
+        state.chapterScenarioIds.length >= MIN_SCENARIOS
+      ) {
+        return state;
+      }
+
+      const orderedScenarios = getOrderedChapterScenarios(ch);
+      const startAge = orderedScenarios[0].age;
+      const coreIds = orderedScenarios.slice(0, MIN_SCENARIOS).map((s) => s.id);
       return {
         ...state,
         chapterId: ch.id,
         scenarioIndex: 0,
         age: Math.max(state.age, startAge),
         cash: state.cash + (ch.index === 1 ? 500 : ch.index === 2 ? 5000 : 20000),
+        chapterScenarioIds: coreIds,
+        recentlyAddedScenarioIds: [],
+        consecutiveBadDecisions: 0,
+        financialHealthScore: computeFinancialHealthScore(state),
       };
     }
     case 'APPLY_CHOICE': {
@@ -115,22 +171,59 @@ function reducer(state: GameState, action: Action): GameState {
         }
       }
       // advance scenario pointer
-      s = { ...s, scenarioIndex: state.scenarioIndex + 1 };
+      const nextIndex = state.scenarioIndex + 1;
+      const bad = isBadChoice(action.choice);
+      const consecutiveBadDecisions = bad ? state.consecutiveBadDecisions + 1 : 0;
+      const financialHealthScore = computeFinancialHealthScore({
+        savings: s.savings,
+        happiness: s.happiness,
+        debt: s.debt,
+        consecutiveBadDecisions,
+      });
+
+      const ch = CHAPTERS.find((c) => c.id === state.chapterId);
+      let chapterScenarioIds = state.chapterScenarioIds;
+      let recentlyAddedScenarioIds: string[] = [];
+
+      if (ch && nextIndex >= MIN_SCENARIOS) {
+        const targetLength = getChapterTargetLength(financialHealthScore);
+        const result = appendBonusScenarios(ch, chapterScenarioIds, targetLength);
+        chapterScenarioIds = result.ids;
+        recentlyAddedScenarioIds = result.added;
+      }
+
+      s = {
+        ...s,
+        scenarioIndex: nextIndex,
+        financialHealthScore,
+        consecutiveBadDecisions,
+        chapterScenarioIds,
+        recentlyAddedScenarioIds,
+      };
       return s;
     }
     case 'COMPLETE_CHAPTER': {
       const completed = state.chaptersCompleted.includes(action.chapter.id)
         ? state.chaptersCompleted
         : [...state.chaptersCompleted, action.chapter.id];
+      const chapterProgress = {
+        ...state.chapterProgress,
+        [action.chapter.id]: state.chapterScenarioIds,
+      };
       return {
         ...state,
         chaptersCompleted: completed,
         chapterId: null,
         scenarioIndex: 0,
+        chapterScenarioIds: [],
+        recentlyAddedScenarioIds: [],
+        chapterProgress,
         age: Math.max(state.age, action.chapter.endAge),
         pendingLessonDate: todayKey(),
       };
     }
+    case 'CLEAR_RECENTLY_ADDED':
+      return { ...state, recentlyAddedScenarioIds: [] };
     case 'COMPLETE_STREAK_TERM': {
       const today = todayKey();
       const termsLearned = state.termsLearned.includes(action.termId)
@@ -169,6 +262,7 @@ type Ctx = {
   completeStreakTerm: (termId: string) => void;
   reset: () => void;
   completeIntro: (playerName: string) => void;
+  clearRecentlyAdded: () => void;
   hydrated: boolean;
 };
 
@@ -184,7 +278,21 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
         const raw = await AsyncStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw) as GameState;
-          dispatch({ type: 'HYDRATE', state: { ...INITIAL, ...parsed } });
+          const merged = { ...INITIAL, ...parsed, recentlyAddedScenarioIds: [] };
+          if (
+            merged.chapterId &&
+            (!merged.chapterScenarioIds || merged.chapterScenarioIds.length === 0)
+          ) {
+            const ch = CHAPTERS.find((c) => c.id === merged.chapterId);
+            if (ch) {
+              merged.chapterScenarioIds = getOrderedChapterScenarios(ch).slice(0, MIN_SCENARIOS).map((s) => s.id);
+            }
+          }
+          merged.chapterProgress = merged.chapterProgress ?? {};
+          merged.financialHealthScore =
+            merged.financialHealthScore ?? computeFinancialHealthScore(merged);
+          merged.consecutiveBadDecisions = merged.consecutiveBadDecisions ?? 0;
+          dispatch({ type: 'HYDRATE', state: merged });
         }
       } finally {
         setHydrated(true);
@@ -214,6 +322,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       completeStreakTerm: (termId) => dispatch({ type: 'COMPLETE_STREAK_TERM', termId }),
       reset: () => dispatch({ type: 'RESET' }),
       completeIntro: (playerName) => dispatch({ type: 'COMPLETE_INTRO', playerName }),
+      clearRecentlyAdded: () => dispatch({ type: 'CLEAR_RECENTLY_ADDED' }),
     }),
     [state, hydrated],
   );

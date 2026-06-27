@@ -62,6 +62,12 @@ export type GameState = {
   scenarioIndex: number;
   chaptersCompleted: string[];
   log: { age: number; text: string }[];
+  // Dynamic chapter roadmap
+  financialHealthScore: number;
+  consecutiveBadDecisions: number;
+  chapterScenarioIds: string[];
+  recentlyAddedScenarioIds: string[];
+  chapterProgress: Record<string, string[]>;
   // Onboarding
   playerName: string | null;
   introCompleted: boolean;

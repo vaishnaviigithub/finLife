@@ -8,6 +8,7 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { CHAPTERS, useGame } from '@/src/game/store';
 import { ALL_FLAGS } from '@/src/game/data';
+import { computeFinancialHealthScore } from '@/src/game/scoring';
 import { C, FONT } from '@/src/ui/theme';
 import { play } from '@/src/game/audio';
 import PixelAvatar from '@/src/components/PixelAvatar';
@@ -32,16 +33,7 @@ export default function Summary() {
     return ALL_FLAGS.filter((f) => state.flags[f.key]);
   }, [state.flags]);
 
-  // Score: knowledge + happiness/2 + min(savings/1000, 50) - min(debt/2000, 30)
-  const score = Math.max(
-    0,
-    Math.round(
-      state.knowledge * 0.6 +
-        state.happiness * 0.2 +
-        Math.min(state.savings / 1000, 60) -
-        Math.min(state.debt / 2000, 30),
-    ),
-  );
+  const score = computeFinancialHealthScore(state);
 
   const grade = score > 80 ? 'S' : score > 65 ? 'A' : score > 50 ? 'B' : score > 35 ? 'C' : 'D';
   const gradeColor =

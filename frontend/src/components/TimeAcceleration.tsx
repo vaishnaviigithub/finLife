@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, TextInput, ScrollView } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -18,6 +18,54 @@ type Props = {
   events: AccelEvent[];
   onDone: () => void;
 };
+
+export type LessonStats = {
+  cash?: number;
+  savings?: number;
+  debt?: number;
+  age?: number;
+};
+
+const GEMINI_API_KEY =
+  (globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } }).process?.env
+    ?.EXPO_PUBLIC_GEMINI_API_KEY;
+
+async function askGeminiQuestion(question: string, concept: string, lessonText: string, stats?: LessonStats) {
+  if (!GEMINI_API_KEY) {
+    throw new Error('Add EXPO_PUBLIC_GEMINI_API_KEY to enable the tutor.');
+  }
+
+  const age = stats?.age ?? 16;
+  const prompt = `You are a friendly financial tutor for an Indian student who is currently ${age} years old. Answer in 2-3 short sentences, plain language, with no markdown, no bullets, and no jargon. Use the lesson and current game stats below. Lesson concept: ${concept}. Lesson text: ${lessonText}. User question: ${question}. Current stats: cash ₹${stats?.cash ?? 0}, savings ₹${stats?.savings ?? 0}, debt ₹${stats?.debt ?? 0}, age ${age}.`;
+
+  const url =
+  `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.2, maxOutputTokens: 1024 },
+    }),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(details || 'Unable to reach Gemini right now.');
+  }
+
+  const data = await response.json();
+  const answer = data?.candidates?.[0]?.content?.parts
+    ?.map((part: { text?: string }) => part.text ?? '')
+    .join('')
+    .trim();
+
+  if (!answer) {
+    throw new Error('Gemini did not return an answer.');
+  }
+
+  return answer;
+}
 
 export default function TimeAcceleration({ events, onDone }: Props) {
   const [idx, setIdx] = useState(0);
@@ -119,6 +167,84 @@ export default function TimeAcceleration({ events, onDone }: Props) {
           </Text>
         </Pressable>
       </View>
+    </View>
+  );
+}
+
+export function LessonTutor({
+  concept,
+  lessonText,
+  stats,
+}: {
+  concept: string;
+  lessonText: string;
+  stats: LessonStats;
+}) {
+  const [question, setQuestion] = useState('');
+  const [answer, setAnswer] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleAsk = async () => {
+    const trimmed = question.trim();
+    if (!trimmed || loading) return;
+
+    setLoading(true);
+    setError('');
+    setAnswer('');
+
+    try {
+      const result = await askGeminiQuestion(trimmed, concept, lessonText, stats);
+      setAnswer(result);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to get an answer.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <View style={styles.tutorCard} testID="lesson-tutor">
+      <Text style={styles.tutorLabel}>Confused? Ask me anything about this lesson.</Text>
+      <TextInput
+        style={styles.tutorInput}
+        value={question}
+        onChangeText={setQuestion}
+        multiline
+        placeholder="Ask about why this choice matters or what it means."
+        placeholderTextColor="#7a7a7a"
+        textAlignVertical="top"
+        autoCapitalize="sentences"
+      />
+      <Pressable
+        disabled={loading || !question.trim()}
+        onPress={() => {
+          play('click');
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
+          handleAsk();
+        }}
+        style={({ pressed }) => [
+          styles.tutorBtn,
+          (loading || !question.trim()) && styles.tutorBtnDisabled,
+          pressed && { transform: [{ translateX: 2 }, { translateY: 2 }] },
+        ]}
+      >
+        <Text style={styles.tutorBtnText}>{loading ? 'THINKING...' : 'ASK'}</Text>
+      </Pressable>
+      {error ? (
+        <View style={styles.tutorAnswerBox}>
+          <ScrollView style={styles.tutorAnswerScroll} nestedScrollEnabled>
+            <Text style={[styles.tutorAnswerText, styles.tutorAnswerError]}>{error}</Text>
+          </ScrollView>
+        </View>
+      ) : null}
+      {answer ? (
+        <View style={styles.tutorAnswerBox}>
+          <ScrollView style={styles.tutorAnswerScroll} nestedScrollEnabled>
+            <Text style={styles.tutorAnswerText}>{answer}</Text>
+          </ScrollView>
+        </View>
+      ) : null}
     </View>
   );
 }
@@ -307,5 +433,67 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 13,
     letterSpacing: 2,
+  },
+  tutorCard: {
+    marginTop: 14,
+    backgroundColor: '#111',
+    borderWidth: 3,
+    borderColor: '#000',
+    padding: 10,
+  },
+  tutorLabel: {
+    fontFamily: FONT.display,
+    color: C.yellow,
+    fontSize: 8,
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  tutorInput: {
+    minHeight: 80,
+    backgroundColor: '#0b0b0b',
+    borderWidth: 2,
+    borderColor: C.green,
+    color: C.white,
+    fontFamily: FONT.body,
+    fontSize: 16,
+    lineHeight: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    marginBottom: 8,
+  },
+  tutorBtn: {
+    backgroundColor: C.yellow,
+    borderWidth: 3,
+    borderColor: '#000',
+    paddingVertical: 10,
+    alignItems: 'center',
+  },
+  tutorBtnDisabled: {
+    opacity: 0.5,
+  },
+  tutorBtnText: {
+    fontFamily: FONT.display,
+    color: '#000',
+    fontSize: 12,
+    letterSpacing: 1,
+  },
+  tutorAnswerBox: {
+    backgroundColor: '#fff',
+    borderWidth: 3,
+    borderColor: '#000',
+    padding: 10,
+    marginTop: 8,
+  },
+  tutorAnswerScroll: {
+    maxHeight: 180,
+  },
+  tutorAnswerText: {
+    fontFamily: FONT.body,
+    color: '#000',
+    fontSize: 16,
+    lineHeight: 20,
+  },
+  tutorAnswerError: {
+    color: C.red,
   },
 });

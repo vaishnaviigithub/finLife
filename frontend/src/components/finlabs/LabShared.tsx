@@ -6,21 +6,11 @@ import {
   Pressable,
   ScrollView,
   TextInput,
-  Dimensions,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Animated, {
-  FadeIn,
-  FadeInRight,
-  FadeOut,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { FadeIn, FadeInRight, FadeOut } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { C, FONT } from '@/src/ui/theme';
 import { FL_BG, FL_GREEN, FL_YELLOW } from '@/src/finlabs/storage';
@@ -28,7 +18,51 @@ import { play } from '@/src/game/audio';
 import ArtifactImage from '@/src/components/ArtifactImage';
 import { ARTIFACTS } from '@/src/game/artifacts';
 
-const { width: SCREEN_W } = Dimensions.get('window');
+type LessonStats = {
+  cash?: number;
+  savings?: number;
+  debt?: number;
+  age?: number;
+};
+
+const GEMINI_API_KEY =
+  (globalThis as typeof globalThis & { process?: { env?: Record<string, string | undefined> } }).process?.env
+    ?.EXPO_PUBLIC_GEMINI_API_KEY;
+
+async function askGeminiQuestion(question: string, concept: string, lessonText: string, stats?: LessonStats) {
+  if (!GEMINI_API_KEY) {
+    throw new Error('Add EXPO_PUBLIC_GEMINI_API_KEY to enable the tutor.');
+  }
+
+  const prompt = `You are a friendly financial tutor for a 16-year-old Indian student. Answer in 2-3 short sentences, plain language, with no markdown, no bullets, and no jargon. Use the lesson and current game stats below. Lesson concept: ${concept}. Lesson text: ${lessonText}. User question: ${question}. Current stats: cash ₹${stats?.cash ?? 0}, savings ₹${stats?.savings ?? 0}, debt ₹${stats?.debt ?? 0}, age ${stats?.age ?? 16}.`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${encodeURIComponent(GEMINI_API_KEY)}`;
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ role: 'user', parts: [{ text: prompt }] }],
+      generationConfig: { temperature: 0.2, maxOutputTokens: 180 },
+    }),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    throw new Error(details || 'Unable to reach Gemini right now.');
+  }
+
+  const data = await response.json();
+  const answer = data?.candidates?.[0]?.content?.parts
+    ?.map((part: { text?: string }) => part.text ?? '')
+    .join('')
+    .trim();
+
+  if (!answer) {
+    throw new Error('Gemini did not return an answer.');
+  }
+
+  return answer;
+}
 
 export type ConceptMeta = {
   acronym: string;
@@ -311,6 +345,7 @@ export function LabLessonCard({
         <Text style={styles.lessonEyebrow}>THE LESSON</Text>
         <Text style={styles.lessonText}>{text}</Text>
       </View>
+
       <Pressable
         onPress={() => {
           play('coin');
@@ -949,6 +984,65 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     textAlign: 'center',
     marginTop: 12,
+  },
+  lessonAssistantCard: {
+    backgroundColor: '#111',
+    borderWidth: 3,
+    borderColor: '#000',
+    padding: 12,
+    marginTop: 16,
+  },
+  lessonAssistantLabel: {
+    fontFamily: FONT.display,
+    color: FL_YELLOW,
+    fontSize: 8,
+    letterSpacing: 1,
+    marginBottom: 8,
+  },
+  lessonAskInput: {
+    minHeight: 94,
+    backgroundColor: '#0b0b0b',
+    borderWidth: 2,
+    borderColor: FL_GREEN,
+    color: C.white,
+    fontFamily: FONT.body,
+    fontSize: 18,
+    lineHeight: 22,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    marginBottom: 10,
+  },
+  lessonAskBtn: {
+    backgroundColor: FL_YELLOW,
+    borderWidth: 3,
+    borderColor: '#000',
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  lessonAskBtnDisabled: {
+    opacity: 0.5,
+  },
+  lessonAskBtnText: {
+    fontFamily: FONT.display,
+    color: '#000',
+    fontSize: 12,
+    letterSpacing: 1,
+  },
+  lessonAnswerBox: {
+    backgroundColor: '#fff',
+    borderWidth: 3,
+    borderColor: '#000',
+    padding: 12,
+    marginTop: 10,
+  },
+  lessonAnswerText: {
+    fontFamily: FONT.body,
+    color: '#000',
+    fontSize: 18,
+    lineHeight: 22,
+  },
+  lessonAnswerError: {
+    color: C.red,
   },
   lessonBtn: {
     backgroundColor: C.green,

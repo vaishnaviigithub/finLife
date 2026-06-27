@@ -21,10 +21,13 @@ import Animated, {
   withTiming,
   withSequence,
   Easing,
+  SlideInDown,
+  FadeIn,
 } from 'react-native-reanimated';
 
-import { CHAPTERS, useGame } from '@/src/game/store';
-import { Chapter } from '@/src/game/types';
+import { CHAPTERS, getOrderedChapterScenarios, useGame } from '@/src/game/store';
+import { Chapter, Scenario } from '@/src/game/types';
+import { MIN_SCENARIOS } from '@/src/game/scoring';
 import { C, FONT } from '@/src/ui/theme';
 import { FL_GREEN } from '@/src/finlabs/storage';
 import { finLabsRoadmapHref } from '@/src/finlabs/routes';
@@ -41,7 +44,33 @@ import {
 } from '@/src/game/artifacts';
 
 const NODE_SIZE = 44;
-const CANVAS_H = 250;
+const CANVAS_H_BASE = 250;
+
+function getCanvasHeight(nodeCount: number) {
+  return Math.max(CANVAS_H_BASE, 160 + nodeCount * 38);
+}
+
+function getVisibleScenarios(
+  chapter: Chapter,
+  isCurrent: boolean,
+  completed: boolean,
+  chapterId: string | null,
+  chapterScenarioIds: string[],
+  chapterProgress: Record<string, string[]>,
+): Scenario[] {
+  const byId = (ids: string[]) =>
+    ids
+      .map((id) => chapter.scenarios.find((s) => s.id === id))
+      .filter((s): s is Scenario => !!s);
+
+  if (completed && chapterProgress[chapter.id]?.length) {
+    return byId(chapterProgress[chapter.id]);
+  }
+  if (isCurrent && chapterId === chapter.id && chapterScenarioIds.length > 0) {
+    return byId(chapterScenarioIds);
+  }
+  return getOrderedChapterScenarios(chapter).slice(0, MIN_SCENARIOS);
+}
 
 function getNodePositions(count: number) {
   const top = 0.18;
@@ -89,7 +118,7 @@ function makeTrail(
 
 export default function Index() {
   const router = useRouter();
-  const { state, startChapter, reset, hydrated } = useGame();
+  const { state, startChapter, reset, hydrated, clearRecentlyAdded } = useGame();
   const { width } = useWindowDimensions();
   const canvasW = Math.min(width - 28, 400);
 
@@ -197,14 +226,27 @@ export default function Index() {
             const isLocked = !completed && !isCurrent;
             const activeNodeIdx = isCurrent
               ? state.chapterId === ch.id
-                ? Math.min(state.scenarioIndex, ch.scenarios.length - 1)
+                ? Math.min(state.scenarioIndex, Math.max(state.chapterScenarioIds.length - 1, 0))
                 : 0
               : -1;
+            const visibleScenarios = getVisibleScenarios(
+              ch,
+              isCurrent,
+              completed,
+              state.chapterId,
+              state.chapterScenarioIds,
+              state.chapterProgress,
+            );
+            const recentlyAdded =
+              isCurrent && state.chapterId === ch.id ? state.recentlyAddedScenarioIds : [];
 
             return (
               <ChapterSection
                 key={ch.id}
                 chapter={ch}
+                visibleScenarios={visibleScenarios}
+                recentlyAddedIds={recentlyAdded}
+                onAnimationDone={clearRecentlyAdded}
                 completed={completed}
                 isCurrent={isCurrent}
                 isLocked={isLocked}
@@ -257,6 +299,9 @@ export default function Index() {
 
 function ChapterSection({
   chapter,
+  visibleScenarios,
+  recentlyAddedIds,
+  onAnimationDone,
   completed,
   isCurrent,
   isLocked,
@@ -270,6 +315,9 @@ function ChapterSection({
   onFinLabs,
 }: {
   chapter: Chapter;
+  visibleScenarios: Scenario[];
+  recentlyAddedIds: string[];
+  onAnimationDone: () => void;
   completed: boolean;
   isCurrent: boolean;
   isLocked: boolean;
@@ -282,9 +330,19 @@ function ChapterSection({
   onPlay: () => void;
   onFinLabs: () => void;
 }) {
+  const canvasH = getCanvasHeight(visibleScenarios.length);
+
+  useEffect(() => {
+    if (recentlyAddedIds.length === 0) return;
+    play('coin');
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning).catch(() => {});
+    const timer = setTimeout(onAnimationDone, 1200);
+    return () => clearTimeout(timer);
+  }, [recentlyAddedIds, onAnimationDone]);
+
   const nodePositions = useMemo(
-    () => getNodePositions(chapter.scenarios.length),
-    [chapter.scenarios.length],
+    () => getNodePositions(visibleScenarios.length),
+    [visibleScenarios.length],
   );
 
   const trailDots = useMemo(() => {
@@ -360,7 +418,7 @@ function ChapterSection({
         </View>
       </View>
 
-      <View style={[styles.canvas, { width: canvasW, height: CANVAS_H }]}>
+      <View style={[styles.canvas, { width: canvasW, height: canvasH }]}>
         <ImageBackground
           source={ARTIFACTS[bgKey]}
           style={StyleSheet.absoluteFillObject}
@@ -381,23 +439,45 @@ function ChapterSection({
                 styles.trailDot,
                 {
                   left: p.x * canvasW - 3,
-                  top: p.y * CANVAS_H - 3,
+                  top: p.y * canvasH - 3,
                   backgroundColor: isLocked ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.7)',
                 },
               ]}
             />
           ))}
 
-          {chapter.scenarios.map((sc, i) => {
+          {visibleScenarios.map((sc, i) => {
             const pos = nodePositions[i];
             const left = pos.x * canvasW - NODE_SIZE / 2;
-            const top = pos.y * CANVAS_H - NODE_SIZE / 2;
+            const top = pos.y * canvasH - NODE_SIZE / 2;
             const nodeCompleted = completed || (isCurrent && i < activeNodeIdx);
             const nodeCurrent = isCurrent && i === activeNodeIdx;
             const artifactKey = getScenarioArtifact(sc.id);
+            const isNewlyAdded = recentlyAddedIds.includes(sc.id);
+            const isBonus = i >= MIN_SCENARIOS;
+
+            const NodeWrapper = isNewlyAdded ? Animated.View : View;
+            const wrapperProps = isNewlyAdded
+              ? {
+                  entering: SlideInDown.duration(700)
+                    .springify()
+                    .damping(14)
+                    .stiffness(90),
+                }
+              : {};
 
             return (
-              <View key={sc.id} style={{ position: 'absolute', left, top, alignItems: 'center' }}>
+              <NodeWrapper
+                key={sc.id}
+                {...wrapperProps}
+                style={{ position: 'absolute', left, top, alignItems: 'center' }}
+              >
+                {isNewlyAdded ? (
+                  <Animated.View
+                    entering={FadeIn.duration(400).delay(200)}
+                    style={styles.newNodeGlow}
+                  />
+                ) : null}
                 <Pressable
                   testID={`node-${chapter.id}-${i}`}
                   disabled={isLocked}
@@ -407,6 +487,8 @@ function ChapterSection({
                     nodeCompleted && styles.nodeDone,
                     nodeCurrent && styles.nodeCurrent,
                     isLocked && styles.nodeLocked,
+                    isBonus && !nodeCompleted && styles.nodeBonus,
+                    isNewlyAdded && styles.nodeNew,
                     pressed && !isLocked && { transform: [{ scale: 0.94 }] },
                   ]}
                 >
@@ -454,8 +536,11 @@ function ChapterSection({
                     {sc.title}
                   </Text>
                   <Text style={styles.nodeLabelAge}>AGE {sc.age}</Text>
+                  {isBonus && !nodeCompleted ? (
+                    <Text style={styles.nodeBonusTag}>EXTRA</Text>
+                  ) : null}
                 </View>
-              </View>
+              </NodeWrapper>
             );
           })}
         </ImageBackground>
@@ -779,6 +864,38 @@ const styles = StyleSheet.create({
   nodeLocked: {
     backgroundColor: 'rgba(40,40,40,0.8)',
     borderColor: '#555',
+  },
+  nodeBonus: {
+    borderColor: C.orange,
+    borderStyle: 'dashed' as const,
+  },
+  nodeNew: {
+    borderColor: C.red,
+    borderWidth: 3,
+    shadowColor: C.red,
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  newNodeGlow: {
+    position: 'absolute',
+    width: NODE_SIZE + 20,
+    height: NODE_SIZE + 20,
+    borderRadius: (NODE_SIZE + 20) / 2,
+    backgroundColor: 'rgba(255, 60, 60, 0.25)',
+    top: -10,
+    left: -10,
+    zIndex: -1,
+  },
+  nodeBonusTag: {
+    fontFamily: FONT.display,
+    color: C.orange,
+    fontSize: 6,
+    letterSpacing: 1,
+    marginTop: 1,
+    textShadowColor: 'rgba(0,0,0,0.9)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 3,
   },
   nodeCheck: {
     position: 'absolute',

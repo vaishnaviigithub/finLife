@@ -11,11 +11,17 @@ import Hud from '@/src/components/Hud';
 import DialogBox from '@/src/components/DialogBox';
 import ChoiceButton from '@/src/components/ChoiceButton';
 import PixelScene from '@/src/components/PixelScene';
-import TimeAcceleration from '@/src/components/TimeAcceleration';
+import TimeAcceleration, { LessonTutor, type LessonStats } from '@/src/components/TimeAcceleration';
 import StreakTermModal from '@/src/components/StreakTermModal';
 import { C, FONT } from '@/src/ui/theme';
 import { Choice, Scenario } from '@/src/game/types';
 import { buildAccelEvents, AccelEvent } from '@/src/game/accelEvents';
+import {
+  computeFinancialHealthScore,
+  getChapterTargetLength,
+  isBadChoice,
+  MIN_SCENARIOS,
+} from '@/src/game/scoring';
 import { play } from '@/src/game/audio';
 import ArtifactImage from '@/src/components/ArtifactImage';
 import { ARTIFACTS } from '@/src/game/artifacts';
@@ -34,11 +40,18 @@ export default function Play() {
     [state.chapterId],
   );
 
-  const scenario: Scenario | undefined = chapter?.scenarios[state.scenarioIndex];
+  const scenario: Scenario | undefined = useMemo(() => {
+    if (!chapter) return undefined;
+    const id = state.chapterScenarioIds[state.scenarioIndex];
+    return chapter.scenarios.find((s) => s.id === id);
+  }, [chapter, state.chapterScenarioIds, state.scenarioIndex]);
+
+  const totalScenarios = state.chapterScenarioIds.length;
 
   const [phase, setPhase] = useState<Phase>('situation_decision');
   const [accelEvents, setAccelEvents] = useState<AccelEvent[]>([]);
   const [lastChoice, setLastChoice] = useState<Choice | null>(null);
+  const [lastLessonStats, setLastLessonStats] = useState<LessonStats | null>(null);
   const [isLast, setIsLast] = useState(false);
   const [streakModalVisible, setStreakModalVisible] = useState(false);
   const [completedChapterId, setCompletedChapterId] = useState<string | null>(null);
@@ -97,12 +110,19 @@ export default function Play() {
       <>
         <LessonScreen
           choice={lastChoice}
+          stats={lastLessonStats ?? {
+            age: state.age,
+            cash: state.cash,
+            savings: state.savings,
+            debt: state.debt,
+          }}
           onContinue={() => {
             if (isLast && chapter) {
               finishChapter(chapter);
             } else {
               setPhase('situation_decision');
               setLastChoice(null);
+              setLastLessonStats(null);
               setAccelEvents([]);
             }
           }}
@@ -193,11 +213,28 @@ export default function Play() {
     };
 
     const events = buildAccelEvents(prev, next, choice, scenario);
-    const last = state.scenarioIndex + 1 >= chapter.scenarios.length;
+
+    const bad = isBadChoice(choice);
+    const projectedConsecutive = bad ? state.consecutiveBadDecisions + 1 : 0;
+    const projectedScore = computeFinancialHealthScore({
+      savings: savingsAfter,
+      happiness: happyAfter,
+      debt: debtAfter,
+      consecutiveBadDecisions: projectedConsecutive,
+    });
+    const nextIndex = state.scenarioIndex + 1;
+    const targetLength = getChapterTargetLength(projectedScore);
+    const isLast = nextIndex >= targetLength && nextIndex >= MIN_SCENARIOS;
 
     setAccelEvents(events);
     setLastChoice(choice);
-    setIsLast(last);
+    setLastLessonStats({
+      age: ageAfter,
+      cash: cashAfter,
+      savings: savingsAfter,
+      debt: debtAfter,
+    });
+    setIsLast(isLast);
     applyChoice(choice, scenario);
     setPhase('consequence');
   };
@@ -212,6 +249,7 @@ export default function Play() {
             savings={state.savings}
             debt={state.debt}
             happiness={state.happiness}
+            financialHealth={state.financialHealthScore}
           />
 
           {/* 4-Beat structure indicator */}
@@ -225,7 +263,10 @@ export default function Play() {
             <View style={{ flex: 1 }}>
               <Text style={styles.chapterTitle}>{chapter.title}</Text>
               <Text style={styles.chapterSub}>
-                SCENARIO {state.scenarioIndex + 1} / {chapter.scenarios.length}
+                SCENARIO {state.scenarioIndex + 1} / {totalScenarios}
+                {state.financialHealthScore < 70 && state.scenarioIndex + 1 >= MIN_SCENARIOS
+                  ? ' · STRETCHING'
+                  : ''}
               </Text>
             </View>
             <MaterialCommunityIcons name="map-marker-radius" size={20} color={C.yellow} />
@@ -335,9 +376,11 @@ function BeatHeader({
 
 function LessonScreen({
   choice,
+  stats,
   onContinue,
 }: {
   choice: Choice;
+  stats: LessonStats;
   onContinue: () => void;
 }) {
   return (
@@ -357,6 +400,11 @@ function LessonScreen({
               <Text style={lessonStyles.eyebrow}>④ THE LESSON</Text>
               <Text style={lessonStyles.lessonText}>{choice.lesson}</Text>
             </View>
+            <LessonTutor
+              concept={choice.concept}
+              lessonText={choice.lesson}
+              stats={stats}
+            />
           </Animated.View>
 
           <Pressable

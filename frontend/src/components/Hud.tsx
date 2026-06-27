@@ -11,6 +11,7 @@ type Props = {
   savings: number;
   debt: number;
   happiness: number;
+  financialHealth?: number;
 };
 
 function fmt(n: number) {
@@ -20,7 +21,7 @@ function fmt(n: number) {
   return `₹${Math.round(n)}`;
 }
 
-export default function Hud({ age, cash, savings, debt, happiness }: Props) {
+export default function Hud({ age, cash, savings, debt, happiness, financialHealth }: Props) {
   return (
     <View style={styles.wrap} testID="game-hud">
       <View style={styles.row}>
@@ -100,6 +101,33 @@ function HappinessBar({ value }: { value: number }) {
               style={[
                 styles.barCell,
                 { backgroundColor: i < filled ? C.orange : '#000' },
+              ]}
+            />
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function HealthBar({ value }: { value: number }) {
+  const cells = Array.from({ length: 10 });
+  const filled = Math.round(value / 10);
+  const color = value >= 70 ? C.green : value >= 40 ? C.yellow : C.red;
+  return (
+    <View style={styles.stat} testID="hud-financial-health">
+      <View style={[styles.statIcon, { backgroundColor: color }]}>
+        <MaterialCommunityIcons name="heart-pulse" size={16} color={C.black} />
+      </View>
+      <View style={styles.statTextWrap}>
+        <Text style={styles.statLabel}>HEALTH</Text>
+        <View style={styles.bar}>
+          {cells.map((_, i) => (
+            <View
+              key={i}
+              style={[
+                styles.barCell,
+                { backgroundColor: i < filled ? color : '#000' },
               ]}
             />
           ))}
