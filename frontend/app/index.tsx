@@ -507,7 +507,6 @@ function StatChip({
 
 function ComingSoon() {
   const items = [
-    { num: 4, title: 'FIRST JOB', sub: 'Salary, taxes, SIPs', age: '24-29' },
     { num: 5, title: 'MID-LIFE', sub: 'Family, EMIs, gold', age: '30-39' },
     { num: 6, title: 'CRISIS', sub: 'Cancer diagnosis', age: '40-49' },
     { num: 7, title: 'RETIREMENT', sub: 'Corpus & legacy', age: '60+' },
