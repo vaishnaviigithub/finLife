@@ -572,6 +572,127 @@ export const CHAPTERS: Chapter[] = [
       },
     ],
   },
+  {
+    id: 'early_career',
+    index: 4,
+    title: 'EARLY CAREER',
+    subtitle: 'First salaries & investing choices',
+    ageRange: 'Age 24 — 30',
+    endAge: 30,
+    landscape: {
+      sky: ['#0F3460', '#16213E'],
+      ground: '#3D3D5C',
+      accent: '#2ECC71',
+      name: 'METRO',
+    },
+    scenarios: [
+      {
+        id: 'c4s1',
+        age: 25,
+        title: 'THE ₹89,000 DECISION',
+        prompt:
+          "Your year-end bonus just landed — ₹89,000, separate from your salary. Your SIP is already running on its own. This money has no plan yet. First time you've had enough to actually treat this as an investment decision, not just a spending one.",
+        scene: 'home',
+        advanceYears: 1,
+        skipCompound: true,
+        terms: [
+          {
+            name: 'Fixed Deposit (FD)',
+            definition:
+              "You give the bank your money for a fixed time, and they pay it back with a bit extra on top — at a rate that's locked in from day one.",
+          },
+          {
+            name: 'Equity Mutual Fund',
+            definition:
+              'Your money goes into the stock market, spread across many companies, instead of you picking stocks yourself.',
+          },
+          {
+            name: 'STP (Systematic Transfer Plan)',
+            definition:
+              'A staggered way into the stock market — instead of investing everything on one day, a fixed amount moves in automatically every month.',
+          },
+          {
+            name: 'PPF (Public Provident Fund)',
+            definition:
+              'A government-backed savings scheme, very safe, tax-free returns — but your money is locked in for 15 years.',
+          },
+        ],
+        choices: [
+          {
+            id: 'fd',
+            label: 'PUT IT IN A FIXED DEPOSIT',
+            hint: 'Guaranteed, predictable growth',
+            delta: { cash: -89000, savings: 95230, knowledge: 8 },
+            consequenceText:
+              'You locked your ₹89,000 into a fixed deposit at 7% for a year. No drama, no checking the news — it just sat there, growing slowly.',
+            lesson:
+              "FDs won't make you rich, but they won't surprise you either. Guaranteed growth has a real cost: it's slower than what the market could've done.",
+            concept: 'Fixed Deposit (FD)',
+            accelCaptions: {
+              cash: 'You moved ₹89,000 out of cash and into a locked deposit.',
+              savings: 'Your FD earned ₹6,230 in interest over the year.',
+              knowledge:
+                "Knowledge +8. You understand 'Fixed Deposits' a little better now.",
+            },
+          },
+          {
+            id: 'equity_lumpsum',
+            label: 'LUMP SUM INTO EQUITY MUTUAL FUND',
+            hint: "Higher growth potential, full amount exposed to today's price",
+            delta: { cash: -89000, savings: 98700, knowledge: 8 },
+            consequenceText:
+              'You put the full ₹89,000 into an equity fund on day one. The market dipped 8% in month two before recovering — for a few weeks, your ₹89,000 was worth less than ₹82,000 on paper.',
+            lesson:
+              "It worked out this time — but for a while, you were down. That dip was the real cost of investing the full amount on a single day. Same bet, different timing, and the ride could've gone the other way.",
+            concept: 'Equity Mutual Fund',
+            accelCaptions: {
+              cash: 'You moved ₹89,000 out of cash into the market.',
+              savings:
+                'After a rocky few months, your investment grew to ₹98,700 by year-end.',
+              knowledge:
+                "Knowledge +8. You understand 'Equity Mutual Funds' a little better now.",
+            },
+          },
+          {
+            id: 'stp',
+            label: 'STP INTO EQUITY OVER 6-12 MONTHS',
+            hint: 'Smooths out the timing risk of going all-in today',
+            delta: { cash: -89000, savings: 96100, knowledge: 8 },
+            consequenceText:
+              'You parked the ₹89,000 in a liquid fund and let ₹9,000 move into equity every month. By the time the market dipped in month two, only ₹18,000 was exposed — the rest was still safely parked.',
+            lesson:
+              "You paid a small price in upside for a smoother ride. In a year the market mostly rises, going all-in usually wins. In a year it dips early, staggering in usually wins. You can't know which year it'll be in advance.",
+            concept: 'STP (Systematic Transfer Plan)',
+            accelCaptions: {
+              cash:
+                'You moved ₹89,000 out of cash into a liquid fund, then staggered it into equity.',
+              savings:
+                'By year-end, smoother entry left you with ₹96,100 — slightly less than going all-in, since the market mostly rose this year.',
+              knowledge:
+                "Knowledge +8. You understand 'STP (Systematic Transfer Plan)' a little better now.",
+            },
+          },
+          {
+            id: 'ppf',
+            label: 'PUT IT IN PPF',
+            hint: 'Tax-free and safest, but locked in for 15 years',
+            delta: { cash: -89000, savings: 95319, knowledge: 8 },
+            consequenceText:
+              "You put the full ₹89,000 into your PPF account. It's now locked in, quietly earning tax-free interest, completely untouchable for the next 15 years.",
+            lesson:
+              "Safe and tax-free — but for the next 15 years, this money can't help with anything else, even a real emergency. Long-term security has a real cost: zero flexibility.",
+            concept: 'PPF (Public Provident Fund)',
+            accelCaptions: {
+              cash: 'You moved ₹89,000 out of cash into your PPF account.',
+              savings: 'Your PPF balance grew by ₹6,319 this year, tax-free.',
+              knowledge:
+                "Knowledge +8. You understand 'PPF (Public Provident Fund)' a little better now.",
+            },
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 export const ALL_FLAGS: { key: string; positive: boolean; label: string }[] = [
