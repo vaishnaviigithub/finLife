@@ -17,14 +17,14 @@ export default function StallScene({ customerLine, itemLabel, itemCost, paid }: 
       <LinearGradient colors={['#FF8C42', '#FFB36B', '#FFE8C8']} style={styles.sky} />
       <View style={styles.stallBanner}>
         <Text style={styles.stallName}>🥟 AUNTY&apos;S SAMOSA STALL</Text>
-        <Text style={styles.stallSub}>SUMMER VACATION · ₹50 / HOUR</Text>
+        <Text style={styles.stallSub}>SUMMER VACATION · Rs 50 / HOUR</Text>
       </View>
       <View style={styles.counter}>
         <View style={styles.stallFront}>
           <View style={styles.menuChip}>
             <Text style={styles.menuEmoji}>🥟</Text>
             <Text style={styles.menuText}>{itemLabel}</Text>
-            <Text style={styles.menuPrice}>₹{itemCost}</Text>
+            <Text style={styles.menuPrice}>Rs {itemCost}</Text>
           </View>
           <View style={styles.steam}>
             <Text style={styles.steamText}>~ ~ ~</Text>
@@ -41,12 +41,12 @@ export default function StallScene({ customerLine, itemLabel, itemCost, paid }: 
         <View style={styles.priceRow}>
           <View style={styles.pricePill}>
             <Text style={styles.priceLabel}>ORDER</Text>
-            <Text style={styles.priceVal}>₹{itemCost}</Text>
+            <Text style={styles.priceVal}>Rs {itemCost}</Text>
           </View>
           <Text style={styles.priceArrow}>←</Text>
           <View style={styles.pricePillPaid}>
             <Text style={styles.priceLabel}>PAID</Text>
-            <Text style={styles.priceValPaid}>₹{paid}</Text>
+            <Text style={styles.priceValPaid}>Rs {paid}</Text>
           </View>
         </View>
       </View>

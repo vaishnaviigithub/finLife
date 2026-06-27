@@ -46,7 +46,7 @@ export function LabMiniHud({
     <View style={styles.hud}>
       <View style={styles.hudStat}>
         <Text style={styles.hudLabel}>WALLET</Text>
-        <Text style={styles.hudValue}>₹{Math.round(wallet).toLocaleString('en-IN')}</Text>
+        <Text style={styles.hudValue}>Rs {Math.round(wallet).toLocaleString('en-IN')}</Text>
       </View>
       <View style={styles.hudStat}>
         <Text style={styles.hudLabel}>MOOD</Text>
@@ -72,7 +72,7 @@ export type LabAccelEvent =
     };
 
 function fmtStat(v: number, format: 'inr' | 'mood') {
-  if (format === 'inr') return `₹${Math.round(v).toLocaleString('en-IN')}`;
+  if (format === 'inr') return `Rs ${Math.round(v).toLocaleString('en-IN')}`;
   return `${Math.round(v)} / 100`;
 }
 
@@ -119,7 +119,7 @@ function StatCounter({
           <Text style={styles.deltaText}>
             {delta >= 0 ? '+' : '−'}
             {format === 'inr'
-              ? `₹${Math.abs(Math.round(delta)).toLocaleString('en-IN')}`
+              ? `Rs ${Math.abs(Math.round(delta)).toLocaleString('en-IN')}`
               : Math.abs(Math.round(delta))}
           </Text>
         </View>

@@ -42,7 +42,7 @@ import { play } from '@/src/game/audio';
 type Phase = 'tutorial' | 'intro' | 'plan' | 'week' | 'recap' | 'summary';
 
 function fmt(n: number) {
-  return `₹${Math.round(n).toLocaleString('en-IN')}`;
+  return `Rs ${Math.round(n).toLocaleString('en-IN')}`;
 }
 
 function TogglePair({
@@ -196,13 +196,13 @@ export default function PocketMoneyLab({ chapterId }: Props) {
           <LabBeatHeader num="ⓘ" label="PRACTICE ROUND" color={C.yellow} />
           <DialogBox
             speaker="MINI SCENARIO"
-            text="You have ₹50 pocket money. Your friend asks you to split a ₹20 snack. What do you do?"
+            text="You have Rs 50 pocket money. Your friend asks you to split a Rs 20 snack. What do you do?"
           />
           <LabBeatHeader num="②" label="TRY ONE DECISION" color={FL_GREEN} style={{ marginTop: 16 }} />
           {!tutorialDone ? (
             <View style={styles.choices}>
               <ChoiceButton
-                label="SPLIT THE SNACK ₹20"
+                label="SPLIT THE SNACK Rs 20"
                 hint="Fun now, less left over"
                 color={C.blue}
                 onPress={() => {
@@ -211,7 +211,7 @@ export default function PocketMoneyLab({ chapterId }: Props) {
                 }}
               />
               <ChoiceButton
-                label="KEEP YOUR ₹50"
+                label="KEEP YOUR Rs 50"
                 hint="Save it all, skip the snack"
                 color={C.green}
                 onPress={() => {
@@ -247,7 +247,7 @@ export default function PocketMoneyLab({ chapterId }: Props) {
           <Text style={styles.chapterStrip}>FIN LAB · POCKET MONEY · AGE 10</Text>
           <LabSituationBlock
             tag="YOUR WEEK"
-            situation="Maa gave you ₹200 for the school week. Five days, five small money moments — a pen, canteen lunch, a gift pool, a quiet Thursday, and a park trip on Friday. Plan how to spend it BEFORE the week starts."
+            situation="Maa gave you Rs 200 for the school week. Five days, five small money moments — a pen, canteen lunch, a gift pool, a quiet Thursday, and a park trip on Friday. Plan how to spend it BEFORE the week starts."
           />
           <View style={styles.introFacts}>
             <Text style={styles.introFact}>💰 Starting wallet: {fmt(START_WALLET)}</Text>
@@ -281,7 +281,7 @@ export default function PocketMoneyLab({ chapterId }: Props) {
               <LabDecisionBlock>
                 {day.id === 'mon' && (
                   <TogglePair
-                    left="Buy Pen ₹15"
+                    left="Buy Pen Rs 15"
                     right="Skip — risk it"
                     value={plan.buyPen}
                     onChange={(buyPen) => setPlan((p) => ({ ...p, buyPen }))}
@@ -295,7 +295,7 @@ export default function PocketMoneyLab({ chapterId }: Props) {
                 )}
                 {day.id === 'wed' && (
                   <TogglePair
-                    left="Chip in ₹20"
+                    left="Chip in Rs 20"
                     right="Skip"
                     value={plan.chipGift}
                     onChange={(chipGift) => setPlan((p) => ({ ...p, chipGift }))}
@@ -305,14 +305,14 @@ export default function PocketMoneyLab({ chapterId }: Props) {
                 {day.id === 'fri' && (
                   <>
                     <TogglePair
-                      left="Go ₹30"
+                      left="Go Rs 30"
                       right="Skip"
                       value={plan.goPark}
                       onChange={(goPark) => setPlan((p) => ({ ...p, goPark }))}
                       disabled={!canAffordPark}
                     />
                     {!canAffordPark ? (
-                      <Text style={styles.forcedSkip}>Only {fmt(remaining + (plan.goPark ? 30 : 0))} left — park costs ₹30</Text>
+                      <Text style={styles.forcedSkip}>Only {fmt(remaining + (plan.goPark ? 30 : 0))} left — park costs Rs 30</Text>
                     ) : null}
                   </>
                 )}
@@ -380,7 +380,7 @@ export default function PocketMoneyLab({ chapterId }: Props) {
                   <View style={styles.recapStats}>
                     {o.walletDelta !== 0 ? (
                       <Text style={[styles.recapDelta, o.walletDelta < 0 && styles.recapDeltaBad]}>
-                        💰 {o.walletDelta > 0 ? '+' : '−'}₹{Math.abs(o.walletDelta)}
+                        💰 {o.walletDelta > 0 ? '+' : '−'}Rs {Math.abs(o.walletDelta)}
                       </Text>
                     ) : null}
                     {o.moodDelta !== 0 ? (

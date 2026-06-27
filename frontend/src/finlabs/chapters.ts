@@ -71,7 +71,7 @@ export const FINLABS_CHAPTERS: Record<string, FinLabsChapter> = {
         route: 'peer',
         title: 'PEER PRESSURE',
         emoji: '👥',
-        subtitle: '₹800. Social score is real.',
+        subtitle: 'Rs 800. Social score is real.',
         doneKey: 'finlab_teenage_peer_done',
         requiresDoneKey: 'finlab_teenage_bank_done',
       },

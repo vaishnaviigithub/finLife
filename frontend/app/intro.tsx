@@ -212,7 +212,7 @@ function Beat1({ onTap }: { onTap: () => void }) {
       onPress={phase >= 4 ? onTap : undefined}
       style={[styles.beatRoot, { backgroundColor: '#0A0E27' }]}
     >
-      {/* Floating ₹ symbols */}
+      {/* Floating Rs  symbols */}
       {phase < 3 ? <FloatingRupees /> : null}
 
       {/* Stars in the background */}
@@ -315,7 +315,7 @@ function RisingRupee({
           textShadowRadius: 16,
         }}
       >
-        ₹
+        Rs 
       </Text>
     </Animated.View>
   );
@@ -865,7 +865,7 @@ function Card1Situation({ flipped, onFlip }: { flipped: boolean; onFlip: () => v
           <Animated.View entering={FadeIn.duration(300)} style={{ alignItems: 'center' }}>
             <Text style={beat5Styles.scenarioTitle}>BIRTHDAY GIFT</Text>
             <Text style={beat5Styles.scenarioText}>
-              Grandma gives you ₹1,000 for your birthday. What do you do?
+              Grandma gives you Rs 1,000 for your birthday. What do you do?
             </Text>
           </Animated.View>
         )}
@@ -1006,7 +1006,7 @@ function MiniAccel() {
         <View style={[beat5Styles.miniStat, { backgroundColor: C.green }]}>
           <Text style={[beat5Styles.miniStatLabel, { color: '#000' }]}>SAVINGS</Text>
           <Text style={[beat5Styles.miniStatValue, { color: '#000' }]}>
-            ₹{savings.toLocaleString('en-IN')}
+            Rs {savings.toLocaleString('en-IN')}
           </Text>
         </View>
       </View>
@@ -1029,7 +1029,7 @@ const CHAIN_BAD = [
   { age: 22, emoji: '💸', text: 'No savings habit, no investments' },
   { age: 35, emoji: '📉', text: 'Living paycheck to paycheck' },
   { age: 43, emoji: '🏥', text: 'The same health crisis hits' },
-  { age: 43, emoji: '💔', text: 'No insurance. ₹12L gone.', bad: true },
+  { age: 43, emoji: '💔', text: 'No insurance. Rs 12L gone.', bad: true },
 ];
 
 function Beat6({ onTap }: { onTap: () => void }) {

@@ -26,7 +26,7 @@ export const WEEK_DAYS: DayDef[] = [
     title: 'PEN EMERGENCY',
     tag: 'MONDAY · NEED',
     situation:
-      'Monday morning. Your pen ran out before the maths test. The school shop sells one for ₹15. You could skip it and borrow — but the teacher notices when students borrow every week.',
+      'Monday morning. Your pen ran out before the maths test. The school shop sells one for Rs 15. You could skip it and borrow — but the teacher notices when students borrow every week.',
     emoji: '✏️',
   },
   {
@@ -35,7 +35,7 @@ export const WEEK_DAYS: DayDef[] = [
     title: 'CANTEEN LUNCH',
     tag: 'TUESDAY · SOCIAL',
     situation:
-      'Tuesday lunch break. Your friends are heading to the canteen. Eating with them costs ₹10–₹60 depending on what you order. Bringing food from home costs ₹0 but you sit alone.',
+      'Tuesday lunch break. Your friends are heading to the canteen. Eating with them costs Rs 10–Rs 60 depending on what you order. Bringing food from home costs Rs 0 but you sit alone.',
     emoji: '🍱',
   },
   {
@@ -44,7 +44,7 @@ export const WEEK_DAYS: DayDef[] = [
     title: 'BIRTHDAY GIFT POOL',
     tag: 'WEDNESDAY · FRIENDSHIP',
     situation:
-      'Wednesday after school. Your class is collecting ₹20 each for a birthday gift for Riya. Everyone else has chipped in. Skipping saves money but Riya might notice.',
+      'Wednesday after school. Your class is collecting Rs 20 each for a birthday gift for Riya. Everyone else has chipped in. Skipping saves money but Riya might notice.',
     emoji: '🎁',
   },
   {
@@ -62,7 +62,7 @@ export const WEEK_DAYS: DayDef[] = [
     title: 'PARK TRIP',
     tag: 'FRIDAY · FUN',
     situation:
-      'Friday evening. Friends are going to the neighbourhood park — entry and snacks cost ₹30 total. It is the most fun event of the week, but only if you still have the money.',
+      'Friday evening. Friends are going to the neighbourhood park — entry and snacks cost Rs 30 total. It is the most fun event of the week, but only if you still have the money.',
     emoji: '🎡',
   },
 ];
@@ -110,7 +110,7 @@ export function buildDayOutcomes(plan: Plan): DayOutcome[] {
       walletDelta = -15;
       wallet += walletDelta;
       headline = 'Pen bought — ready for class';
-      story = 'You bought the pen for ₹15. You are prepared for the maths test. No borrowing needed.';
+      story = 'You bought the pen for Rs 15. You are prepared for the maths test. No borrowing needed.';
     } else {
       moodDelta = -5;
       mood = clampMood(mood + moodDelta);
@@ -136,8 +136,8 @@ export function buildDayOutcomes(plan: Plan): DayOutcome[] {
       wallet += walletDelta;
       moodDelta = Math.min(plan.canteen / 10, 8);
       mood = clampMood(mood + moodDelta);
-      headline = `Canteen lunch — ₹${plan.canteen} spent`;
-      story = `You spent ₹${plan.canteen} at the canteen with friends. You fit in and enjoyed lunch together.`;
+      headline = `Canteen lunch — Rs ${plan.canteen} spent`;
+      story = `You spent Rs ${plan.canteen} at the canteen with friends. You fit in and enjoyed lunch together.`;
     } else {
       moodDelta = -3;
       mood = clampMood(mood + moodDelta);
@@ -162,13 +162,13 @@ export function buildDayOutcomes(plan: Plan): DayOutcome[] {
       wallet += walletDelta;
       moodDelta = 8;
       mood = clampMood(mood + moodDelta);
-      headline = 'Gift pool — chipped in ₹20';
-      story = 'You chipped in ₹20 for Riya\'s gift. She smiled when she saw your name on the card.';
+      headline = 'Gift pool — chipped in Rs 20';
+      story = 'You chipped in Rs 20 for Riya\'s gift. She smiled when she saw your name on the card.';
     } else {
       moodDelta = -10;
       mood = clampMood(mood + moodDelta);
       headline = 'Skipped the gift pool';
-      story = 'You skipped the ₹20 gift pool. Riya noticed you were the only one who did not contribute.';
+      story = 'You skipped the Rs 20 gift pool. Riya noticed you were the only one who did not contribute.';
     }
 
     outcomes.push(makeOutcome('WEDNESDAY', '🎁', headline, walletFrom, moodFrom, wallet, mood, walletDelta, moodDelta, story));
@@ -189,7 +189,7 @@ export function buildDayOutcomes(plan: Plan): DayOutcome[] {
         mood,
         0,
         0,
-        `No spending today. You opened your wallet and counted ₹${wallet} left. Your plan is ${wallet >= 0 ? 'still on track' : 'in trouble'}.`,
+        `No spending today. You opened your wallet and counted Rs ${wallet} left. Your plan is ${wallet >= 0 ? 'still on track' : 'in trouble'}.`,
       ),
     );
   }
@@ -210,12 +210,12 @@ export function buildDayOutcomes(plan: Plan): DayOutcome[] {
         moodDelta = 12;
         mood = clampMood(mood + moodDelta);
         headline = 'Park trip — best day of the week';
-        story = 'PARK DAY! You spent ₹30 and went with friends. Best day of the week.';
+        story = 'PARK DAY! You spent Rs 30 and went with friends. Best day of the week.';
       } else {
         moodDelta = -8;
         mood = clampMood(mood + moodDelta);
         headline = 'Planned park but ran out of money';
-        story = `You planned the park trip but only had ₹${wallet} left. You could not afford the ₹30. Friends went without you.`;
+        story = `You planned the park trip but only had Rs ${wallet} left. You could not afford the Rs 30. Friends went without you.`;
       }
     } else {
       moodDelta = -5;
@@ -265,8 +265,8 @@ function makeOutcome(
       label: 'WALLET',
       text:
         walletDelta < 0
-          ? `You spent ₹${Math.abs(walletDelta)} from your wallet.`
-          : `You gained ₹${walletDelta} in your wallet.`,
+          ? `You spent Rs ${Math.abs(walletDelta)} from your wallet.`
+          : `You gained Rs ${walletDelta} in your wallet.`,
       from: walletFrom,
       to: wallet,
       format: 'inr',

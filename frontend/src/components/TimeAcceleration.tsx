@@ -125,7 +125,7 @@ export default function TimeAcceleration({ events, onDone }: Props) {
 
 function fmt(v: number, format: 'inr' | 'plain100') {
   if (format === 'inr') {
-    return '₹' + Math.round(v).toLocaleString('en-IN');
+    return 'Rs ' + Math.round(v).toLocaleString('en-IN');
   }
   return `${Math.round(v)} / 100`;
 }
@@ -175,7 +175,7 @@ function StatCounter({
           <Text style={styles.deltaText}>
             {delta >= 0 ? '+' : '−'}
             {format === 'inr'
-              ? '₹' + Math.abs(delta).toLocaleString('en-IN')
+              ? 'Rs ' + Math.abs(delta).toLocaleString('en-IN')
               : Math.abs(delta)}
           </Text>
         </View>

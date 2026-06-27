@@ -152,7 +152,7 @@ export function EmiSplitDemo({ onReady }: ReadyProps) {
         <Pressable onPress={split} disabled={tiles >= 12} style={demo.phone}>
           <Text style={demo.phoneEmoji}>📱</Text>
           <Text style={demo.phonePrice}>
-            {tiles >= 12 ? 'SPLIT!' : '₹15,000 PHONE'}
+            {tiles >= 12 ? 'SPLIT!' : 'Rs 15,000 PHONE'}
           </Text>
           <Text style={demo.hint}>
             {tiles < 12 ? `TAP RAPIDLY TO SPLIT (${tiles}/12)` : 'ALL 12 PIECES OUT ✓'}
@@ -167,7 +167,7 @@ export function EmiSplitDemo({ onReady }: ReadyProps) {
       <View style={demo.tileGrid}>
         {Array.from({ length: tiles }).map((_, i) => (
           <Animated.View key={i} entering={FadeInDown.duration(150)} style={demo.tile}>
-            <Text style={demo.tileText}>₹1,334</Text>
+            <Text style={demo.tileText}>Rs 1,334</Text>
           </Animated.View>
         ))}
       </View>
@@ -180,8 +180,8 @@ export function EmiSplitDemo({ onReady }: ReadyProps) {
 
       {revealed ? (
         <Animated.View entering={FadeIn.duration(300)} style={demo.result}>
-          <Text style={demo.resultLine}>₹1,334 × 12 = ₹16,008</Text>
-          <Text style={demo.resultBad}>+₹1,008 EXTRA JUST TO SPLIT IT</Text>
+          <Text style={demo.resultLine}>Rs 1,334 × 12 = Rs 16,008</Text>
+          <Text style={demo.resultBad}>+Rs 1,008 EXTRA JUST TO SPLIT IT</Text>
         </Animated.View>
       ) : null}
     </View>
@@ -217,24 +217,24 @@ export function EmiHiddenCostDemo({ onReady }: ReadyProps) {
       <View style={demo.result}>
         <View style={demo.billRow}>
           <Text style={demo.billLabel}>Phone MRP</Text>
-          <Text style={demo.billVal}>₹{base.toLocaleString('en-IN')}</Text>
+          <Text style={demo.billVal}>Rs {base.toLocaleString('en-IN')}</Text>
         </View>
         {step >= 1 ? (
           <Animated.View entering={FadeInDown} style={demo.billRow}>
             <Text style={demo.billLabel}>+ Processing fee</Text>
-            <Text style={demo.billVal}>₹{fee.toFixed(2)}</Text>
+            <Text style={demo.billVal}>Rs {fee.toFixed(2)}</Text>
           </Animated.View>
         ) : null}
         {step >= 2 ? (
           <Animated.View entering={FadeInDown} style={demo.billRow}>
             <Text style={demo.billLabel}>+ GST on fee</Text>
-            <Text style={demo.billVal}>₹{gst.toFixed(2)}</Text>
+            <Text style={demo.billVal}>Rs {gst.toFixed(2)}</Text>
           </Animated.View>
         ) : null}
         {step >= 3 ? (
           <Animated.View entering={FadeInDown} style={[demo.billRow, { borderBottomWidth: 0 }]}>
             <Text style={[demo.billLabel, { color: C.red }]}>BEFORE EMI STARTS</Text>
-            <Text style={demo.billTotal}>₹{total.toFixed(2)}</Text>
+            <Text style={demo.billTotal}>Rs {total.toFixed(2)}</Text>
           </Animated.View>
         ) : null}
       </View>
@@ -259,7 +259,7 @@ export function EmiHiddenCostDemo({ onReady }: ReadyProps) {
 
 export function BankFlowDemo({ onReady }: ReadyProps) {
   const [step, setStep] = useState(0);
-  const steps = ['YOUR ₹', 'GOES TO BANK', 'BANK LENDS IT', 'YOU GET INTEREST'];
+  const steps = ['YOUR Rs ', 'GOES TO BANK', 'BANK LENDS IT', 'YOU GET INTEREST'];
   const tap = () => {
     play('tick');
     const n = step + 1;
@@ -333,7 +333,7 @@ export function OpportunityForkDemo({ onReady }: ReadyProps) {
   };
   return (
     <View>
-      <Text style={[demo.hint, { textAlign: 'center', marginBottom: 6 }]}>₹350 FORK — TAP A PATH</Text>
+      <Text style={[demo.hint, { textAlign: 'center', marginBottom: 6 }]}>Rs 350 FORK — TAP A PATH</Text>
       <View style={demo.forkRow}>
         <Pressable onPress={() => choose('movie')} style={[demo.forkCard, pick === 'movie' && demo.forkSelected]}>
           <Text style={demo.forkEmoji}>🎬</Text>
@@ -348,8 +348,8 @@ export function OpportunityForkDemo({ onReady }: ReadyProps) {
         <Animated.View entering={FadeIn} style={demo.result}>
           <Text style={demo.resultLine}>
             {pick === 'movie'
-              ? 'You traded ₹350 for fun + friends. That trade-off is opportunity cost.'
-              : 'You saved ₹350 but lost some mood + social time. Also a real cost.'}
+              ? 'You traded Rs 350 for fun + friends. That trade-off is opportunity cost.'
+              : 'You saved Rs 350 but lost some mood + social time. Also a real cost.'}
           </Text>
         </Animated.View>
       ) : null}
@@ -402,18 +402,18 @@ export function RateBuilderDemo({ onReady }: ReadyProps) {
   }, [hrs, rate, onReady]);
   return (
     <View style={demo.rateCard}>
-      <Text style={demo.rateLine}>Hours: {hrs || '?'}  ×  Rate: ₹{rate || '?'}/hr  ×  1.2 buffer</Text>
-      <Text style={[demo.resultBad, { color: FL_YELLOW }]}>= ₹{price || '???'} per poster</Text>
+      <Text style={demo.rateLine}>Hours: {hrs || '?'}  ×  Rate: Rs {rate || '?'}/hr  ×  1.2 buffer</Text>
+      <Text style={[demo.resultBad, { color: FL_YELLOW }]}>= Rs {price || '???'} per poster</Text>
       <View style={demo.forkRow}>
         <Pressable onPress={() => { play('tick'); setHrs(2); }} style={[demo.btn, hrs > 0 && demo.btnActive]}>
           <Text style={[demo.btnText, hrs > 0 && demo.btnTextActive]}>2 HOURS</Text>
         </Pressable>
         <Pressable onPress={() => { play('tick'); setRate(300); }} style={[demo.btn, rate > 0 && demo.btnActive]}>
-          <Text style={[demo.btnText, rate > 0 && demo.btnTextActive]}>₹300/HR</Text>
+          <Text style={[demo.btnText, rate > 0 && demo.btnTextActive]}>Rs 300/HR</Text>
         </Pressable>
       </View>
       {hrs >= 2 && rate >= 300 ? (
-        <Text style={[demo.hint, { color: FL_GREEN }]}>✓ ₹720 — fair quote unlocked</Text>
+        <Text style={[demo.hint, { color: FL_GREEN }]}>✓ Rs 720 — fair quote unlocked</Text>
       ) : (
         <Text style={demo.hint}>SET BOTH VALUES</Text>
       )}
@@ -435,7 +435,7 @@ export function GstSplitDemo({ onReady }: ReadyProps) {
     <View>
       <Pressable onPress={advance} disabled={step >= 3} style={demo.btn}>
         <Text style={demo.btnText}>
-          {step === 0 ? 'START WITH SUBTOTAL ₹810 ▶' :
+          {step === 0 ? 'START WITH SUBTOTAL Rs 810 ▶' :
            step === 1 ? 'ADD CGST 2.5% ▶' :
            step === 2 ? 'ADD SGST 2.5% ▶' : '✓ BILL COMPLETE'}
         </Text>
@@ -443,18 +443,18 @@ export function GstSplitDemo({ onReady }: ReadyProps) {
       {step >= 1 ? (
         <Animated.View entering={FadeInDown} style={demo.billRow}>
           <Text style={demo.billLabel}>CGST @ 2.5%</Text>
-          <Text style={demo.billVal}>₹{half.toFixed(2)}</Text>
+          <Text style={demo.billVal}>Rs {half.toFixed(2)}</Text>
         </Animated.View>
       ) : null}
       {step >= 2 ? (
         <Animated.View entering={FadeInDown} style={demo.billRow}>
           <Text style={demo.billLabel}>SGST @ 2.5%</Text>
-          <Text style={demo.billVal}>₹{half.toFixed(2)}</Text>
+          <Text style={demo.billVal}>Rs {half.toFixed(2)}</Text>
         </Animated.View>
       ) : null}
       {step >= 3 ? (
         <Animated.View entering={FadeInDown} style={demo.result}>
-          <Text style={demo.resultLine}>TOTAL = ₹810 + ₹20.25 + ₹20.25 = ₹850.50</Text>
+          <Text style={demo.resultLine}>TOTAL = Rs 810 + Rs 20.25 + Rs 20.25 = Rs 850.50</Text>
         </Animated.View>
       ) : null}
     </View>
@@ -469,7 +469,7 @@ export function ServiceChargeDemo({ onReady }: ReadyProps) {
         <View style={demo.billRow}>
           <Text style={demo.billLabel}>Service Charge 10%</Text>
           <Text style={[demo.billVal, { color: removed ? '#555' : C.red, textDecorationLine: removed ? 'line-through' : 'none' }]}>
-            ₹117.00
+            Rs 117.00
           </Text>
         </View>
       </View>

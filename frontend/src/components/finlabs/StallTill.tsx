@@ -72,7 +72,7 @@ export default function StallTill({
         <View style={styles.registerScreen}>
           <Text style={styles.registerLabel}>CHANGE TO GIVE</Text>
           <View style={styles.registerInputRow}>
-            <Text style={styles.rupee}>₹</Text>
+            <Text style={styles.rupee}>Rs </Text>
             <TextInput
               style={styles.registerInput}
               value={typedChange}
@@ -85,15 +85,15 @@ export default function StallTill({
             />
           </View>
           <Text style={styles.registerHint}>
-            {needed > 0 ? `Subtract: paid − order = ₹${needed}` : ''}
+            {needed > 0 ? `Subtract: paid − order = Rs ${needed}` : ''}
           </Text>
         </View>
         <View style={styles.registerTotals}>
           <Text style={styles.totalLine}>
-            TARGET <Text style={styles.totalVal}>₹{needed}</Text>
+            TARGET <Text style={styles.totalVal}>Rs {needed}</Text>
           </Text>
           <Text style={[styles.totalLine, pickedTotal > needed && styles.totalBad]}>
-            COINS <Text style={styles.totalVal}>₹{pickedTotal}</Text>
+            COINS <Text style={styles.totalVal}>Rs {pickedTotal}</Text>
           </Text>
         </View>
       </View>
@@ -116,7 +116,7 @@ export default function StallTill({
         ) : (
           selected.map((v, i) => (
             <Pressable key={`${v}-${i}`} onPress={() => onRemoveCoin(i)} style={styles.handCoin}>
-              <Text style={styles.handCoinText}>₹{v}</Text>
+              <Text style={styles.handCoinText}>Rs {v}</Text>
             </Pressable>
           ))
         )}
@@ -145,7 +145,7 @@ export default function StallTill({
                   pressed && left > 0 && { opacity: 0.85 },
                 ]}
               >
-                <Text style={[styles.coinValue, { color: colors.text }]}>₹{stack.value}</Text>
+                <Text style={[styles.coinValue, { color: colors.text }]}>Rs {stack.value}</Text>
                 <View style={styles.coinCount}>
                   <Text style={styles.coinCountText}>{left}</Text>
                 </View>

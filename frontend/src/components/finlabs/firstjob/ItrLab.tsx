@@ -45,28 +45,28 @@ const TUTORIAL_TERMS = [
     id: 'salary',
     title: 'SALARY',
     short: 'Money Arjun earned from his first job.',
-    detail: 'Arjun is a salaried employee. This year his company paid him ₹5,00,000.',
+    detail: 'Arjun is a salaried employee. This year his company paid him Rs 5,00,000.',
     icon: 'briefcase-variant',
   },
   {
     id: 'tds',
     title: 'TDS',
     short: 'Tax deducted before salary reaches him.',
-    detail: 'His employer already sent ₹10,000 to the government under his PAN.',
+    detail: 'His employer already sent Rs 10,000 to the government under his PAN.',
     icon: 'bank-transfer-out',
   },
   {
     id: 'itr',
     title: 'ITR',
     short: 'The return form that tells the final tax story.',
-    detail: 'For simple salary below ₹50L, Arjun usually files ITR-1.',
+    detail: 'For simple salary below Rs 50L, Arjun usually files ITR-1.',
     icon: 'file-document-edit',
   },
   {
     id: 'refund',
     title: 'REFUND',
     short: 'Money he gets back if extra tax was taken.',
-    detail: 'Refund = TDS paid - final tax owed. Here that is ₹10,000 - ₹0.',
+    detail: 'Refund = TDS paid - final tax owed. Here that is Rs 10,000 - Rs 0.',
     icon: 'cash-refund',
   },
 ];
@@ -77,10 +77,10 @@ const QUESTIONS = [
     options: ['Nothing changes', 'He pays a penalty', 'His refund doubles'],
     answer: 1,
     explanation:
-      'File before July 31. Late filing costs ₹1,000-₹5,000 in penalties depending on income. No reason to pay it.',
+      'File before July 31. Late filing costs Rs 1,000-Rs 5,000 in penalties depending on income. No reason to pay it.',
   },
   {
-    text: 'Which form does a salary earner below ₹50L use?',
+    text: 'Which form does a salary earner below Rs 50L use?',
     options: ['ITR-1', 'ITR-2', 'ITR-3'],
     answer: 0,
     explanation: 'ITR-1. Simple salary, simple form. ITR-2 is for capital gains. ITR-3 is for business income.',
@@ -95,7 +95,7 @@ const QUESTIONS = [
 ];
 
 function money(n: number) {
-  return `₹${Math.round(n).toLocaleString('en-IN')}`;
+  return `Rs ${Math.round(n).toLocaleString('en-IN')}`;
 }
 
 function cleanAmount(v: string) {
@@ -306,12 +306,12 @@ function Tutorial({
   onOpenBreakdown: () => void;
 }) {
   const lines = [
-    ['Salary earned', '₹5,00,000', false],
-    ['TDS taken', '- ₹10,000', false],
+    ['Salary earned', 'Rs 5,00,000', false],
+    ['TDS taken', '- Rs 10,000', false],
     ['divider', '', false],
-    ['Tax he owes', '₹0', false],
+    ['Tax he owes', 'Rs 0', false],
     ['divider', '', false],
-    ['REFUND DUE', '₹10,000 ✓', true],
+    ['REFUND DUE', 'Rs 10,000 ✓', true],
   ] as const;
   const cardsLeft = TUTORIAL_TERMS.length - revealedTerms.size;
 
@@ -338,9 +338,9 @@ function Tutorial({
                 <Text style={styles.missionTagText}>THE CASE FILE</Text>
               </View>
               <Text style={styles.missionText}>
-                Salary earned: â‚¹5,00,000{"\n"}
-                TDS already paid: â‚¹10,000{"\n"}
-                Final tax owed: â‚¹0{"\n\n"}
+                Salary earned: Rs 5,00,000{"\n"}
+                TDS already paid: Rs 10,000{"\n"}
+                Final tax owed: Rs 0{"\n\n"}
                 Tap every concept card before opening the tax desk.
               </Text>
             </View>
@@ -401,7 +401,7 @@ function Tutorial({
         })}
       </View>
       <Text style={styles.tutorialCopy}>
-        His employer took ₹10,000 just in case.{"\n"}He actually owes ₹0.{"\n"}ITR is the form he fills to get it back.
+        His employer took Rs 10,000 just in case.{"\n"}He actually owes Rs 0.{"\n"}ITR is the form he fills to get it back.
       </Text>
       <PrimaryButton label="GOT IT ▶" onPress={onNext} />
     </SafeAreaView>
@@ -429,9 +429,9 @@ function FieldsScreen(props: {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={styles.sticky}>
         <Text style={styles.stickyTitle}>ARJUN{"'"}S DETAILS</Text>
-        <Text style={styles.stickyLine}>Salary:   ₹5,00,000</Text>
-        <Text style={styles.stickyLine}>TDS paid: ₹10,000</Text>
-        <Text style={styles.stickyLine}>Tax owed: ₹0</Text>
+        <Text style={styles.stickyLine}>Salary:   Rs 5,00,000</Text>
+        <Text style={styles.stickyLine}>TDS paid: Rs 10,000</Text>
+        <Text style={styles.stickyLine}>Tax owed: Rs 0</Text>
       </View>
       <ScrollView contentContainerStyle={styles.fieldsScroll} keyboardShouldPersistTaps="handled">
         {FIELDS.map((cfg, idx) => {
@@ -442,11 +442,11 @@ function FieldsScreen(props: {
             <View key={cfg.question} pointerEvents={future || done ? 'none' : 'auto'} style={[styles.fieldCard, future && styles.futureCard, done && styles.doneCard]}>
               <Text style={styles.fieldQuestion}>{cfg.question}</Text>
               {done ? <Text style={styles.doneAnswer}>✓ {money(cleanAmount(props.values[idx]))}</Text> : null}
-              {idx === 2 && !done ? <Text style={styles.formula}>TDS taken - Tax owed{"\n"}₹10,000 - ₹0 = ₹[   ]</Text> : null}
+              {idx === 2 && !done ? <Text style={styles.formula}>TDS taken - Tax owed{"\n"}Rs 10,000 - Rs 0 = Rs [   ]</Text> : null}
               {!done ? (
                 <Animated.View style={active ? { transform: [{ translateX: props.shakeX }] } : undefined}>
                   <View style={styles.inputRow}>
-                    <Text style={styles.inputPrefix}>₹</Text>
+                    <Text style={styles.inputPrefix}>Rs </Text>
                     <TextInput
                       value={props.values[idx]}
                       editable={active}
@@ -469,7 +469,7 @@ function FieldsScreen(props: {
           <Animated.View style={[styles.filedCard, { transform: [{ translateY: props.receiptY }] }]}>
             <Text style={styles.filedTitle}>✓ ITR FILED</Text>
             <Text style={styles.filedLine}>Form: ITR-1</Text>
-            <Text style={styles.filedLine}>Refund: ₹10,000</Text>
+            <Text style={styles.filedLine}>Refund: Rs 10,000</Text>
             <Text style={styles.filedLine}>Arrives: 15-45 working days</Text>
           </Animated.View>
         ) : null}
@@ -534,7 +534,7 @@ function Lesson({ onDone }: { onDone: () => void }) {
         <Text style={styles.cheatTitle}>ITR BASICS</Text>
         <Text style={styles.cheatLine}>Form:     ITR-1</Text>
         <Text style={styles.cheatLine}>Deadline: July 31</Text>
-        <Text style={styles.cheatLine}>Late fee: ₹1,000-₹5,000</Text>
+        <Text style={styles.cheatLine}>Late fee: Rs 1,000-Rs 5,000</Text>
         <Text style={styles.cheatLine}>Verify:   Form 26AS</Text>
         <Text style={styles.cheatLine}>Refund:   TDS - Tax owed</Text>
       </View>

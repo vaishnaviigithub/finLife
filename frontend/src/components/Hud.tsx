@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { C, FONT } from '../ui/theme';
 import ArtifactImage from './ArtifactImage';
 import { ARTIFACTS } from '../game/artifacts';
+import LearnTermsButton from './LearnTermsButton';
 
 type Props = {
   age: number;
@@ -14,10 +15,10 @@ type Props = {
 };
 
 function fmt(n: number) {
-  if (n >= 10000000) return `₹${(n / 10000000).toFixed(1)}Cr`;
-  if (n >= 100000) return `₹${(n / 100000).toFixed(1)}L`;
-  if (n >= 1000) return `₹${(n / 1000).toFixed(1)}K`;
-  return `₹${Math.round(n)}`;
+  if (n >= 10000000) return `Rs ${(n / 10000000).toFixed(1)}Cr`;
+  if (n >= 100000) return `Rs ${(n / 100000).toFixed(1)}L`;
+  if (n >= 1000) return `Rs ${(n / 1000).toFixed(1)}K`;
+  return `Rs ${Math.round(n)}`;
 }
 
 export default function Hud({ age, cash, savings, debt, happiness }: Props) {
@@ -25,6 +26,7 @@ export default function Hud({ age, cash, savings, debt, happiness }: Props) {
     <View style={styles.wrap} testID="game-hud">
       <View style={styles.row}>
         <Stat icon="cake-variant" color={C.yellow} label="AGE" value={`${age}`} testID="hud-age" />
+        <LearnTermsButton compact />
         <Stat icon="cash" color={C.green} label="CASH" value={fmt(cash)} testID="hud-cash" />
         <Stat
           icon="piggy-bank"

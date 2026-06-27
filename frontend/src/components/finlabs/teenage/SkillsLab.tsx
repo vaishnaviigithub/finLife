@@ -48,7 +48,7 @@ const SKILLS_TUTORIAL: TutorialPage[] = [
       { id: 'buf', label: '×1.2', fullForm: 'Revision buffer', meaning: 'Add 20% for edits clients always ask for.' },
     ],
     interactive: (onReady) => <RateBuilderDemo onReady={onReady} />,
-    formula: '2 hrs × ₹300 × 1.2 = ₹720 per poster',
+    formula: '2 hrs × Rs 300 × 1.2 = Rs 720 per poster',
   },
   {
     title: 'CLIENTS DM YOU',
@@ -143,10 +143,10 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
 
   const sendQuote = () => {
     if (quote < 100) {
-      youSay(`₹${quote} ok?`);
+      youSay(`Rs ${quote} ok?`);
       setTimeout(() => {
         arjunSays('DONE! 🎉');
-        arjunSays('(He would have paid ₹400 — you underpriced by ₹300)');
+        arjunSays('(He would have paid Rs 400 — you underpriced by Rs 300)');
         setMood((m) => m - 5);
         setAgreed(quote);
         setChatPhase('paid');
@@ -155,18 +155,18 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
       return;
     }
     if (quote > 2000) {
-      youSay(`My quote: ₹${quote}`);
+      youSay(`My quote: Rs ${quote}`);
       setTimeout(() => {
         arjunSays("That's too much for a small shop sorry 🙏");
         play('bad');
       }, 500);
       return;
     }
-    youSay(`My quote: ₹${quote} (2 hrs work + revisions)`);
+    youSay(`My quote: Rs ${quote} (2 hrs work + revisions)`);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
     setTimeout(async () => {
       await arjunTyping(700);
-      arjunSays('Bhai ₹150 kar do, chhota sa kaam hai');
+      arjunSays('Bhai Rs 150 kar do, chhota sa kaam hai');
       setChatPhase('nego');
     }, 500);
   };
@@ -213,7 +213,7 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
         <Text style={styles.overlayTitle}>💼 BUILD YOUR QUOTE</Text>
         <LabNumericField large label="Hours" value={hours} onChange={setHours} prefix="" />
         <LabNumericField large label="Rate per hour" value={rate} onChange={setRate} />
-        <Text style={styles.quotePreview}>Your price: ₹{quote} (×1.2 buffer)</Text>
+        <Text style={styles.quotePreview}>Your price: Rs {quote} (×1.2 buffer)</Text>
         {quote < 100 ? <Text style={styles.warn}>Too low — he'll grab it instantly</Text> : null}
         {quote > 2000 ? <Text style={styles.warn}>Too high — he'll walk away</Text> : null}
         <Pressable
@@ -229,7 +229,7 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
   const invoiceOverlay =
     chatPhase === 'invoice' ? (
       <View style={styles.overlayPanel}>
-        <Text style={styles.overlayTitle}>🧾 SEND INVOICE · ₹{agreed}</Text>
+        <Text style={styles.overlayTitle}>🧾 SEND INVOICE · Rs {agreed}</Text>
         <LabTextField
           label="Your UPI ID"
           value={upi}
@@ -239,11 +239,11 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
         <Pressable
           disabled={!upiOk}
           onPress={() => {
-            youSay(`Invoice sent ✓ ₹${agreed} · Pay to ${upi}`);
+            youSay(`Invoice sent ✓ Rs ${agreed} · Pay to ${upi}`);
             play('coin');
             setTimeout(async () => {
               await arjunTyping(900);
-              arjunSays(`Paid! ₹${agreed} sent 🎉`);
+              arjunSays(`Paid! Rs ${agreed} sent 🎉`);
               setChatPhase('paid');
               setMood((m) => m + 10);
               play('win');
@@ -277,16 +277,16 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
       <ChatQuickReplies
         options={[
           {
-            label: `Counter: ₹${quote} — fair price 💪`,
+            label: `Counter: Rs ${quote} — fair price 💪`,
             color: FL_GREEN,
             onPress: () => {
               const mid = Math.round((quote + 150) / 2);
-              youSay(`Best I can do is ₹${quote} — includes 2 revisions`);
+              youSay(`Best I can do is Rs ${quote} — includes 2 revisions`);
               setTimeout(async () => {
                 await arjunTyping(800);
-                arjunSays(`Theek hai ₹${mid} chalega?`);
+                arjunSays(`Theek hai Rs ${mid} chalega?`);
                 setTimeout(() => {
-                  youSay(`Deal — ₹${mid} 🤝`);
+                  youSay(`Deal — Rs ${mid} 🤝`);
                   setAgreed(mid);
                   setMood((m) => m + 4);
                   setChatPhase('invoice');
@@ -295,10 +295,10 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
             },
           },
           {
-            label: 'Ok ₹150 (too low 😬)',
+            label: 'Ok Rs 150 (too low 😬)',
             color: C.red,
             onPress: () => {
-              youSay('Ok ₹150 fine');
+              youSay('Ok Rs 150 fine');
               setAgreed(150);
               setMood((m) => m - 3);
               setTimeout(() => arjunSays('Done! Send poster by Sunday'), 400);
@@ -306,13 +306,13 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
             },
           },
           {
-            label: `Firm at ₹${quote} — final`,
+            label: `Firm at Rs ${quote} — final`,
             color: C.yellow,
             onPress: () => {
-              youSay(`₹${quote} is my final price — quality work guaranteed`);
+              youSay(`Rs ${quote} is my final price — quality work guaranteed`);
               setTimeout(async () => {
                 await arjunTyping(700);
-                arjunSays(`Ok deal ₹${quote}! 👍`);
+                arjunSays(`Ok deal Rs ${quote}! 👍`);
                 setAgreed(quote);
                 setMood((m) => m + 8);
                 setChatPhase('invoice');
@@ -325,7 +325,7 @@ export default function SkillsLab({ chapterId }: { chapterId: string }) {
   } else if (chatPhase === 'paid') {
     footer = (
       <Animated.View entering={ZoomIn} style={styles.paidBanner}>
-        <Text style={styles.paidText}>₹{agreed} RECEIVED · MOOD +{agreed >= 300 ? 10 : -3}</Text>
+        <Text style={styles.paidText}>Rs {agreed} RECEIVED · MOOD +{agreed >= 300 ? 10 : -3}</Text>
       </Animated.View>
     );
   }
