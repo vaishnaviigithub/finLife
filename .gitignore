@@ -72,3 +72,4 @@ web-build/
 
 # Mobile SDK tooling
 android-sdk/
+credentials.json
