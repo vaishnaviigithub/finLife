@@ -19,7 +19,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c1s1',
         age: 8,
         title: 'BIRTHDAY MONEY SPLIT',
-        prompt: 'Dadi gives you ₹500 for your birthday. Next week is the book fair, and your class raffle costs ₹100 for a chance at a pizza party.',
+        prompt: 'Dadi gives you Rs 500 for your birthday. Next week is the book fair, and your class raffle costs Rs 100 for a chance at a pizza party.',
         scene: 'home',
         advanceYears: 1,
         choices: [
@@ -37,16 +37,16 @@ export const CHAPTERS: Chapter[] = [
             label: 'ENTER THE RAFFLE',
             hint: 'Small gamble, big social upside',
             delta: { cash: -100, savings: 400, happiness: 6 },
-            consequenceText: 'You put ₹100 in the raffle and save the rest. Winning would be a huge social moment; losing means you miss both the pizza party AND the comics.',
+            consequenceText: 'You put Rs 100 in the raffle and save the rest. Winning would be a huge social moment; losing means you miss both the pizza party AND the comics.',
             lesson: 'Some choices are about chance, not correctness. Risk can feel smart and still lose. ',
             concept: 'Risk vs Certainty',
           },
           {
             id: 'save_all',
-            label: 'SAVE THE FULL ₹500',
+            label: 'SAVE THE FULL Rs 500',
             hint: 'Big number, no treats',
             delta: { savings: 500, happiness: 2, knowledge: 5 },
-            consequenceText: 'You keep all ₹500 safe. You lose the comics and the raffle, and your friends may say you never buy anything for yourself.',
+            consequenceText: 'You keep all Rs 500 safe. You lose the comics and the raffle, and your friends may say you never buy anything for yourself.',
             lesson: 'Saving is powerful, but it is also a choice with its own emotional cost.',
             concept: 'Savings Basics',
           },
@@ -56,7 +56,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c1s2',
         age: 7,
         title: 'PIGGY BANK VS THE FRIEND’S DARE',
-        prompt: 'Your best friend got a glow-in-the-dark yo-yo and says you cannot play with the group unless you get one too. You have ₹300 saved, but you never wanted one until today.',
+        prompt: 'Your best friend got a glow-in-the-dark yo-yo and says you cannot play with the group unless you get one too. You have Rs 300 saved, but you never wanted one until today.',
         scene: 'school',
         advanceYears: 1,
         choices: [
@@ -80,7 +80,7 @@ export const CHAPTERS: Chapter[] = [
           },
           {
             id: 'cheaper',
-            label: 'BUY A ₹50 YO-YO',
+            label: 'BUY A Rs 50 YO-YO',
             hint: 'Less money, lower quality',
             delta: { cash: -50, happiness: 6 },
             consequenceText: 'You spend less and still join the group, but the yo-yo is cheaper and your friend may notice the difference.',
@@ -93,7 +93,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c1s3',
         age: 11,
         title: 'REPORT CARD REWARD',
-        prompt: 'You scored well this term. Papa gives you ₹1,000 and says, “Use it however you want.” Your sibling spent theirs on a toy that broke in a week.',
+        prompt: 'You scored well this term. Papa gives you Rs 1,000 and says, “Use it however you want.” Your sibling spent theirs on a toy that broke in a week.',
         scene: 'home',
         advanceYears: 1,
         choices: [
@@ -102,13 +102,13 @@ export const CHAPTERS: Chapter[] = [
             label: 'SPEND IT ALL',
             hint: 'Fun now, risk later',
             delta: { cash: -1000, happiness: 16 },
-            consequenceText: 'You spend all ₹1,000 on something fun and feel great now. The item may break or lose appeal quickly, just like your sibling’s toy.',
+            consequenceText: 'You spend all Rs 1,000 on something fun and feel great now. The item may break or lose appeal quickly, just like your sibling’s toy.',
             lesson: 'A reward can feel wonderful, but it can also disappear fast. That uncertainty is part of the choice.',
             concept: 'Savings vs Spending',
           },
           {
             id: 'save_all',
-            label: 'SAVE THE FULL ₹1,000',
+            label: 'SAVE THE FULL Rs 1,000',
             hint: 'Papa proud, no spotlight',
             delta: { savings: 1000, happiness: 3, knowledge: 8 },
             consequenceText: 'You save the entire amount and tell Papa. He is proud, but it creates pressure to always be the “saver.”',
@@ -117,7 +117,7 @@ export const CHAPTERS: Chapter[] = [
           },
           {
             id: 'split',
-            label: 'SPEND ₹400, SAVE ₹600',
+            label: 'SPEND Rs 400, SAVE Rs 600',
             hint: 'Balanced, quiet choice',
             delta: { cash: -400, savings: 600, happiness: 8 },
             consequenceText: 'You spend a little and save the rest. There is no big praise, but you avoid the extremes of either extreme choice.',
@@ -130,14 +130,14 @@ export const CHAPTERS: Chapter[] = [
         id: 'c1s4',
         age: 9,
         title: 'THE BORROWED TOY PROBLEM',
-        prompt: 'A friend lent you a handheld game and it got a small scratch at your house. It still works, but your friend has not noticed yet. You have ₹250 saved.',
+        prompt: 'A friend lent you a handheld game and it got a small scratch at your house. It still works, but your friend has not noticed yet. You have Rs 250 saved.',
         scene: 'home',
         advanceYears: 1,
         choices: [
           {
             id: 'cover',
             label: 'BUY A STICKER KIT',
-            hint: 'Hide the scratch for ₹80',
+            hint: 'Hide the scratch for Rs 80',
             delta: { cash: -80, happiness: 5 },
             consequenceText: 'You buy sticker kit and cover the scratch. If your friend never notices, you avoided awkwardness; if they do, it may look like you tried to hide it.',
             lesson: 'Money can fix the surface of a problem, but it cannot buy certainty about how others will react.',
@@ -146,9 +146,9 @@ export const CHAPTERS: Chapter[] = [
           {
             id: 'honest',
             label: 'TELL THE TRUTH',
-            hint: 'Offer ₹80 for repair',
+            hint: 'Offer Rs 80 for repair',
             delta: { happiness: 6, knowledge: 6 },
-            consequenceText: 'You tell your friend honestly and offer ₹80 toward a repair. The reaction is uncertain — honesty may be respected, or it may still feel awkward.',
+            consequenceText: 'You tell your friend honestly and offer Rs 80 toward a repair. The reaction is uncertain — honesty may be respected, or it may still feel awkward.',
             lesson: 'Honesty is a strong choice, but it does not guarantee a perfect result.',
             concept: 'Trust',
           },
@@ -157,7 +157,7 @@ export const CHAPTERS: Chapter[] = [
             label: 'SAY NOTHING',
             hint: 'Save money, hope for the best',
             delta: { happiness: 2 },
-            consequenceText: 'You keep the ₹80 and stay quiet. If your friend never notices, you saved money; if they do, it may look careless.',
+            consequenceText: 'You keep the Rs 80 and stay quiet. If your friend never notices, you saved money; if they do, it may look careless.',
             lesson: 'Not spending money can still be a risk when it means avoiding responsibility.',
             concept: 'Needs vs Wants',
           },
@@ -167,13 +167,13 @@ export const CHAPTERS: Chapter[] = [
         id: 'c1s5',
         age: 10,
         title: 'THE FESTIVAL FIRECRACKER BUDGET',
-        prompt: 'It’s Diwali and you have ₹500 for firecrackers. The shop also sells a sealed ₹100 lucky box — it might be great, or it might be mostly duds.',
+        prompt: 'It’s Diwali and you have Rs 500 for firecrackers. The shop also sells a sealed Rs 100 lucky box — it might be great, or it might be mostly duds.',
         scene: 'home',
         advanceYears: 1,
         choices: [
           {
             id: 'regular',
-            label: 'BUY ₹500 OF REGULAR CRACKERS',
+            label: 'BUY Rs 500 OF REGULAR CRACKERS',
             hint: 'Predictable fun',
             delta: { cash: -500, happiness: 10 },
             consequenceText: 'You buy clearly-priced crackers and know exactly what you will get. The festival is still bright, but you never know if the lucky box would have been better.',
@@ -182,16 +182,16 @@ export const CHAPTERS: Chapter[] = [
           },
           {
             id: 'one_lucky',
-            label: 'BUY 1 LUCKY BOX + ₹400 REGULAR',
+            label: 'BUY 1 LUCKY BOX + Rs 400 REGULAR',
             hint: 'Small gamble, limited risk',
             delta: { cash: -500, happiness: 12 },
-            consequenceText: 'You mix one lucky box with regular crackers. The gamble is contained — if it is a letdown, only ₹100 is at risk.',
+            consequenceText: 'You mix one lucky box with regular crackers. The gamble is contained — if it is a letdown, only Rs 100 is at risk.',
             lesson: 'A small, controlled gamble can make spending more exciting without risking everything.',
             concept: 'Needs vs Wants',
           },
           {
             id: 'three_lucky',
-            label: 'BUY 3 LUCKY BOXES + ₹200 REGULAR',
+            label: 'BUY 3 LUCKY BOXES + Rs 200 REGULAR',
             hint: 'Bigger gamble, bigger risk',
             delta: { cash: -500, happiness: 14 },
             consequenceText: 'You choose three lucky boxes for more excitement. If luck holds, it is great; if not, you miss out on a stronger regular mix.',
@@ -204,16 +204,16 @@ export const CHAPTERS: Chapter[] = [
         id: 'c1s6',
         age: 9,
         title: 'CANTEEN CHANGE MIX-UP',
-        prompt: 'You buy a samosa and juice for ₹37 and give the aunty ₹50. She hands back ₹23. Did she make a mistake?',
+        prompt: 'You buy a samosa and juice for Rs 37 and give the aunty Rs 50. She hands back Rs 23. Did she make a mistake?',
         scene: 'school',
         advanceYears: 1,
         choices: [
           {
             id: 'return',
-            label: 'POINT OUT THE EXTRA ₹10',
+            label: 'POINT OUT THE EXTRA Rs 10',
             hint: 'Honest, smaller pocket',
             delta: { cash: -10, happiness: 4 },
-            consequenceText: 'You return the extra ₹10. The aunty thanks you and may trust you more, even though you gave back money immediately.',
+            consequenceText: 'You return the extra Rs 10. The aunty thanks you and may trust you more, even though you gave back money immediately.',
             lesson: 'Doing the right thing can cost you money, and that is part of what makes honesty meaningful.',
             concept: 'Honesty with Money',
           },
@@ -257,13 +257,13 @@ export const CHAPTERS: Chapter[] = [
         id: 'c2s1',
         age: 15,
         title: 'THE ALLOWANCE SWITCH',
-        prompt: 'Papa switches you from on-request cash to a flat ₹250/month. You have stationery/data needs and Friday hangouts with friends.',
+        prompt: 'Papa switches you from on-request cash to a flat Rs 250/month. You have stationery/data needs and Friday hangouts with friends.',
         scene: 'school',
         advanceYears: 1,
         choices: [
           {
             id: 'full_hangouts',
-            label: 'SPEND ₹120 ON HANGOUTS',
+            label: 'SPEND Rs 120 ON HANGOUTS',
             hint: 'Social calendar stays full',
             delta: { cash: -120, happiness: 14, knowledge: 6 },
             consequenceText: 'You keep all Friday hangouts and rely on the rest for stationery. The month feels fun, but the rest of your budget is tight.',
@@ -294,7 +294,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c2s2',
         age: 17,
         title: 'THE COACHING ADVANCE',
-        prompt: 'A coaching institute asks for ₹2,500 advance to lock your seat. A great calculator is also available for ₹900 only this week.',
+        prompt: 'A coaching institute asks for Rs 2,500 advance to lock your seat. A great calculator is also available for Rs 900 only this week.',
         scene: 'school',
         advanceYears: 1,
         choices: [
@@ -318,7 +318,7 @@ export const CHAPTERS: Chapter[] = [
           },
           {
             id: 'partial',
-            label: 'PAY ₹2,000, BUY CALCULATOR',
+            label: 'PAY Rs 2,000, BUY CALCULATOR',
             hint: 'Split exposure, limited comfort',
             delta: { cash: -3100, savings: 900, happiness: 8 },
             consequenceText: 'You pay most of the advance and still buy the calculator. Neither cost is fully covered, leaving you modestly protected but also underexposed on both.',
@@ -331,13 +331,13 @@ export const CHAPTERS: Chapter[] = [
         id: 'c2s3',
         age: 16,
         title: 'THE GROUP OUTING GIFT PRESSURE',
-        prompt: 'Friends are chipping in for a senior gift. You have ₹350 set aside for an exam book, and one friend loudly says they are paying ₹600.',
+        prompt: 'Friends are chipping in for a senior gift. You have Rs 350 set aside for an exam book, and one friend loudly says they are paying Rs 600.',
         scene: 'street',
         advanceYears: 1,
         choices: [
           {
             id: 'full_amount',
-            label: 'PUT IN ₹350',
+            label: 'PUT IN Rs 350',
             hint: 'Join the group, skip the book',
             delta: { cash: -350, happiness: 10 },
             consequenceText: 'You contribute your full amount and stay part of the group. Your gift is lower than some, and you may wonder if people notice later.',
@@ -346,7 +346,7 @@ export const CHAPTERS: Chapter[] = [
           },
           {
             id: 'partial_amount',
-            label: 'PUT IN ₹150, SAVE ₹200',
+            label: 'PUT IN Rs 150, SAVE Rs 200',
             hint: 'Partial participation',
             delta: { cash: -150, savings: 200, happiness: 6 },
             consequenceText: 'You give less and keep money for your book. Some friends may respect the choice, and some may still feel you did not fully participate.',
@@ -368,7 +368,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c2s4',
         age: 15,
         title: 'THE CAFÉ SWITCH',
-        prompt: 'You and friends planned tea, but two friends want to switch to a café with ₹90 shakes. You only have ₹20.',
+        prompt: 'You and friends planned tea, but two friends want to switch to a café with Rs 90 shakes. You only have Rs 20.',
         scene: 'street',
         advanceYears: 1,
         choices: [
@@ -377,7 +377,7 @@ export const CHAPTERS: Chapter[] = [
             label: 'GO ALONG AND BE HONEST',
             hint: 'No hiding, maybe awkward',
             delta: { happiness: 6, knowledge: 8 },
-            consequenceText: 'You tell your friends you only have ₹20 and may just sit with them. The reaction is unknown — some may cover you, some may keep ordering.',
+            consequenceText: 'You tell your friends you only have Rs 20 and may just sit with them. The reaction is unknown — some may cover you, some may keep ordering.',
             lesson: 'Honesty in the moment can be uncomfortable, but it is often better than pretending you can afford it.',
             concept: 'Peer Pressure',
           },
@@ -405,7 +405,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c2s5',
         age: 16,
         title: 'THE TUITION CENTER JOB',
-        prompt: 'The tuition center offers you a front desk job for ₹1,500/month, but it runs at the same time as your regular study group.',
+        prompt: 'The tuition center offers you a front desk job for Rs 1,500/month, but it runs at the same time as your regular study group.',
         scene: 'school',
         advanceYears: 1,
         choices: [
@@ -414,7 +414,7 @@ export const CHAPTERS: Chapter[] = [
             label: 'TAKE THE JOB, STUDY LATER',
             hint: 'Earn first, study later',
             delta: { cash: 1500, knowledge: 6, happiness: 8 },
-            consequenceText: 'You earn ₹1,500 and miss the study group. Whether your grades stay strong is uncertain, but your money is real.',
+            consequenceText: 'You earn Rs 1,500 and miss the study group. Whether your grades stay strong is uncertain, but your money is real.',
             lesson: 'Income is important, but so is the time it costs you. The trade-off is not always obvious at first.',
             concept: 'Opportunity Cost',
           },
@@ -432,7 +432,7 @@ export const CHAPTERS: Chapter[] = [
             label: 'ASK FOR FEWER HOURS',
             hint: 'Try for balance',
             delta: { cash: 800, happiness: 6, knowledge: 8 },
-            consequenceText: 'You try to work alternate days for ₹800. The center may accept or may decide they need a full-time helper, and you may be back to the original choice.',
+            consequenceText: 'You try to work alternate days for Rs 800. The center may accept or may decide they need a full-time helper, and you may be back to the original choice.',
             lesson: 'Compromise can be good, but it depends on whether the other side is willing to meet you.',
             concept: 'Time vs Money',
           },
@@ -534,7 +534,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c3s1',
         age: 19,
         title: 'THE LOAN TENURE TRAP',
-        prompt: 'A ₹6,00,000 education loan at 10.5% is ready. The bank wants your repayment tenure now, but you do not know your future salary.',
+        prompt: 'A Rs 6,00,000 education loan at 10.5% is ready. The bank wants your repayment tenure now, but you do not know your future salary.',
         scene: 'college',
         advanceYears: 2,
         choices: [
@@ -571,7 +571,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c3s2',
         age: 21,
         title: 'THE UPI TRAP',
-        prompt: 'You have ₹8,000/month allowance. A UPI history check shows ₹4,200 has already disappeared in small taps, and only ₹1,200 is left for 10 days.',
+        prompt: 'You have Rs 8,000/month allowance. A UPI history check shows Rs 4,200 has already disappeared in small taps, and only Rs 1,200 is left for 10 days.',
         scene: 'college',
         advanceYears: 1,
         choices: [
@@ -580,16 +580,16 @@ export const CHAPTERS: Chapter[] = [
             label: 'SPEND NOTHING FOR 10 DAYS',
             hint: 'Tight but safe',
             delta: { happiness: 2, knowledge: 8 },
-            consequenceText: 'You stop discretionary spending for the rest of the month. The ₹1,200 may stretch, but the social pressure to buy can be hard to resist.',
+            consequenceText: 'You stop discretionary spending for the rest of the month. The Rs 1,200 may stretch, but the social pressure to buy can be hard to resist.',
             lesson: 'A strict rule can work, but it is only as strong as your willpower.',
             concept: 'Invisible Spending',
           },
           {
             id: 'daily_cap',
-            label: 'SET ₹120/DAY CAP',
+            label: 'SET Rs 120/DAY CAP',
             hint: 'Controlled, no buffer',
             delta: { happiness: 4, knowledge: 10 },
-            consequenceText: 'You limit yourself to ₹120 per day. It is more sustainable than zero spending, but there is no room left for surprises.',
+            consequenceText: 'You limit yourself to Rs 120 per day. It is more sustainable than zero spending, but there is no room left for surprises.',
             lesson: 'A budget needs rules and also a little room for real life.',
             concept: 'Budgeting',
           },
@@ -608,7 +608,7 @@ export const CHAPTERS: Chapter[] = [
         id: 'c3s3',
         age: 23,
         title: 'FIRST INTERNSHIP STIPEND',
-        prompt: 'Your 3-month internship paid ₹60,000. Friends are already booking flights. Your gut says save.',
+        prompt: 'Your 3-month internship paid Rs 60,000. Friends are already booking flights. Your gut says save.',
         scene: 'street',
         advanceYears: 1,
         choices: [
@@ -639,8 +639,8 @@ export const CHAPTERS: Chapter[] = [
             setFlags: ['has_mutual_fund'],
             futureAge: 24,
             futureDelta: { savings: 12000 },
-            futureMessage: 'Your index fund returned 20% in one year — ₹12,000 extra added silently.',
-            consequenceText: 'You invest ₹60,000 in a low-cost index fund. The market may go up or down, but over time this is a smart way to build wealth.',
+            futureMessage: 'Your index fund returned 20% in one year — Rs 12,000 extra added silently.',
+            consequenceText: 'You invest Rs 60,000 in a low-cost index fund. The market may go up or down, but over time this is a smart way to build wealth.',
             lesson: 'Investing is not a guarantee, but over time it beats keeping cash idle.',
             concept: 'Compound Interest',
           },
@@ -794,6 +794,127 @@ export const CHAPTERS: Chapter[] = [
             consequenceText: 'You make small payments on both debts. Interest keeps accumulating and neither debt disappears.',
             lesson: 'Minimum payments are designed to keep you in debt as long as possible.',
             concept: 'Minimum Payment Trap',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'early_career',
+    index: 4,
+    title: 'EARLY CAREER',
+    subtitle: 'First salaries & investing choices',
+    ageRange: 'Age 24 — 30',
+    endAge: 30,
+    landscape: {
+      sky: ['#0F3460', '#16213E'],
+      ground: '#3D3D5C',
+      accent: '#2ECC71',
+      name: 'METRO',
+    },
+    scenarios: [
+      {
+        id: 'c4s1',
+        age: 25,
+        title: 'THE Rs 89,000 DECISION',
+        prompt:
+          "Your year-end bonus just landed — Rs 89,000, separate from your salary. Your SIP is already running on its own. This money has no plan yet. First time you've had enough to actually treat this as an investment decision, not just a spending one.",
+        scene: 'home',
+        advanceYears: 1,
+        skipCompound: true,
+        terms: [
+          {
+            name: 'Fixed Deposit (FD)',
+            definition:
+              "You give the bank your money for a fixed time, and they pay it back with a bit extra on top — at a rate that's locked in from day one.",
+          },
+          {
+            name: 'Equity Mutual Fund',
+            definition:
+              'Your money goes into the stock market, spread across many companies, instead of you picking stocks yourself.',
+          },
+          {
+            name: 'STP (Systematic Transfer Plan)',
+            definition:
+              'A staggered way into the stock market — instead of investing everything on one day, a fixed amount moves in automatically every month.',
+          },
+          {
+            name: 'PPF (Public Provident Fund)',
+            definition:
+              'A government-backed savings scheme, very safe, tax-free returns — but your money is locked in for 15 years.',
+          },
+        ],
+        choices: [
+          {
+            id: 'fd',
+            label: 'PUT IT IN A FIXED DEPOSIT',
+            hint: 'Guaranteed, predictable growth',
+            delta: { cash: -89000, savings: 95230, knowledge: 8 },
+            consequenceText:
+              'You locked your Rs 89,000 into a fixed deposit at 7% for a year. No drama, no checking the news — it just sat there, growing slowly.',
+            lesson:
+              "FDs won't make you rich, but they won't surprise you either. Guaranteed growth has a real cost: it's slower than what the market could've done.",
+            concept: 'Fixed Deposit (FD)',
+            accelCaptions: {
+              cash: 'You moved Rs 89,000 out of cash and into a locked deposit.',
+              savings: 'Your FD earned Rs 6,230 in interest over the year.',
+              knowledge:
+                "Knowledge +8. You understand 'Fixed Deposits' a little better now.",
+            },
+          },
+          {
+            id: 'equity_lumpsum',
+            label: 'LUMP SUM INTO EQUITY MUTUAL FUND',
+            hint: "Higher growth potential, full amount exposed to today's price",
+            delta: { cash: -89000, savings: 98700, knowledge: 8 },
+            consequenceText:
+              'You put the full Rs 89,000 into an equity fund on day one. The market dipped 8% in month two before recovering — for a few weeks, your Rs 89,000 was worth less than Rs 82,000 on paper.',
+            lesson:
+              "It worked out this time — but for a while, you were down. That dip was the real cost of investing the full amount on a single day. Same bet, different timing, and the ride could've gone the other way.",
+            concept: 'Equity Mutual Fund',
+            accelCaptions: {
+              cash: 'You moved Rs 89,000 out of cash into the market.',
+              savings:
+                'After a rocky few months, your investment grew to Rs 98,700 by year-end.',
+              knowledge:
+                "Knowledge +8. You understand 'Equity Mutual Funds' a little better now.",
+            },
+          },
+          {
+            id: 'stp',
+            label: 'STP INTO EQUITY OVER 6-12 MONTHS',
+            hint: 'Smooths out the timing risk of going all-in today',
+            delta: { cash: -89000, savings: 96100, knowledge: 8 },
+            consequenceText:
+              'You parked the Rs 89,000 in a liquid fund and let Rs 9,000 move into equity every month. By the time the market dipped in month two, only Rs 18,000 was exposed — the rest was still safely parked.',
+            lesson:
+              "You paid a small price in upside for a smoother ride. In a year the market mostly rises, going all-in usually wins. In a year it dips early, staggering in usually wins. You can't know which year it'll be in advance.",
+            concept: 'STP (Systematic Transfer Plan)',
+            accelCaptions: {
+              cash:
+                'You moved Rs 89,000 out of cash into a liquid fund, then staggered it into equity.',
+              savings:
+                'By year-end, smoother entry left you with Rs 96,100 — slightly less than going all-in, since the market mostly rose this year.',
+              knowledge:
+                "Knowledge +8. You understand 'STP (Systematic Transfer Plan)' a little better now.",
+            },
+          },
+          {
+            id: 'ppf',
+            label: 'PUT IT IN PPF',
+            hint: 'Tax-free and safest, but locked in for 15 years',
+            delta: { cash: -89000, savings: 95319, knowledge: 8 },
+            consequenceText:
+              "You put the full Rs 89,000 into your PPF account. It's now locked in, quietly earning tax-free interest, completely untouchable for the next 15 years.",
+            lesson:
+              "Safe and tax-free — but for the next 15 years, this money can't help with anything else, even a real emergency. Long-term security has a real cost: zero flexibility.",
+            concept: 'PPF (Public Provident Fund)',
+            accelCaptions: {
+              cash: 'You moved Rs 89,000 out of cash into your PPF account.',
+              savings: 'Your PPF balance grew by Rs 6,319 this year, tax-free.',
+              knowledge:
+                "Knowledge +8. You understand 'PPF (Public Provident Fund)' a little better now.",
+            },
           },
         ],
       },

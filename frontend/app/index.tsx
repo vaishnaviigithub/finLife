@@ -35,6 +35,7 @@ import { getFinLabsChapter } from '@/src/finlabs/chapters';
 import { play } from '@/src/game/audio';
 import PixelAvatar from '@/src/components/PixelAvatar';
 import ArtifactImage from '@/src/components/ArtifactImage';
+import LearnTermsButton from '@/src/components/LearnTermsButton';
 import {
   ARTIFACTS,
   getChapterAccent,
@@ -121,6 +122,7 @@ export default function Index() {
   const { state, startChapter, reset, hydrated, clearRecentlyAdded } = useGame();
   const { width } = useWindowDimensions();
   const canvasW = Math.min(width - 28, 400);
+  const isCompactHeader = width < 380;
 
   const bob = useSharedValue(0);
   const blink = useSharedValue(1);
@@ -192,23 +194,27 @@ export default function Index() {
     <View style={styles.root} testID="home-screen">
       <StatusBar barStyle="light-content" backgroundColor={C.bg} />
       <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-        <View style={styles.headerWrap}>
-          <View style={styles.headerLeft}>
-            <Text style={styles.titleSmallShadow}>FINLIFE</Text>
-            <Text style={styles.titleSmall}>FINLIFE</Text>
-            <Text style={styles.tagline}>
+        <View style={[styles.headerWrap, isCompactHeader && styles.headerWrapCompact]}>
+          <View style={[styles.headerLeft, isCompactHeader && styles.headerLeftCompact]}>
+            <Text
+              style={[styles.titleSmallShadow, isCompactHeader && styles.titleSmallCompact]}
+              numberOfLines={1}
+            >
+              FINLIFE
+            </Text>
+            <Text
+              style={[styles.titleSmall, isCompactHeader && styles.titleSmallCompact]}
+              numberOfLines={1}
+            >
+              FINLIFE
+            </Text>
+            <Text style={[styles.tagline, isCompactHeader && styles.taglineCompact]} numberOfLines={2}>
               {state.playerName ? `HI ${state.playerName.toUpperCase()} ▸ YOUR JOURNEY` : 'YOUR FINANCIAL LIFE, FAST-FORWARDED'}
             </Text>
           </View>
-          <View style={styles.headerRight}>
+          <View style={[styles.headerRight, isCompactHeader && styles.headerRightCompact]}>
             <StatChip icon="cake-variant" label="AGE" value={`${state.age}`} color={C.yellow} />
-            <StatChip
-              icon="piggy-bank"
-              label="SAVED"
-              value={fmtShort(state.savings)}
-              color={C.green}
-              artifact="piggyBank"
-            />
+            <LearnTermsButton />
             <StreakChip count={state.streakCount} />
           </View>
         </View>
@@ -592,7 +598,6 @@ function StatChip({
 
 function ComingSoon() {
   const items = [
-    { num: 4, title: 'FIRST JOB', sub: 'Salary, taxes, SIPs', age: '24-29' },
     { num: 5, title: 'MID-LIFE', sub: 'Family, EMIs, gold', age: '30-39' },
     { num: 6, title: 'CRISIS', sub: 'Cancer diagnosis', age: '40-49' },
     { num: 7, title: 'RETIREMENT', sub: 'Corpus & legacy', age: '60+' },
@@ -621,10 +626,10 @@ function ComingSoon() {
 }
 
 function fmtShort(n: number) {
-  if (n >= 10000000) return `₹${(n / 10000000).toFixed(1)}Cr`;
-  if (n >= 100000) return `₹${(n / 100000).toFixed(1)}L`;
-  if (n >= 1000) return `₹${(n / 1000).toFixed(1)}K`;
-  return `₹${Math.round(n)}`;
+  if (n >= 10000000) return `Rs ${(n / 10000000).toFixed(1)}Cr`;
+  if (n >= 100000) return `Rs ${(n / 100000).toFixed(1)}L`;
+  if (n >= 1000) return `Rs ${(n / 1000).toFixed(1)}K`;
+  return `Rs ${Math.round(n)}`;
 }
 
 const styles = StyleSheet.create({
@@ -638,12 +643,28 @@ const styles = StyleSheet.create({
     borderBottomColor: C.yellow,
     gap: 10,
   },
-  headerLeft: { flex: 1, position: 'relative' },
+  headerWrapCompact: {
+    alignItems: 'flex-start',
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    gap: 8,
+  },
+  headerLeft: { flex: 1, minWidth: 0, position: 'relative' },
+  headerLeftCompact: {
+    flex: 0,
+    width: 96,
+    paddingTop: 2,
+  },
   titleSmall: {
     fontFamily: FONT.display,
     color: C.yellow,
     fontSize: 24,
     letterSpacing: 2,
+  },
+  titleSmallCompact: {
+    fontSize: 17,
+    letterSpacing: 2,
+    lineHeight: 20,
   },
   titleSmallShadow: {
     position: 'absolute',
@@ -659,9 +680,23 @@ const styles = StyleSheet.create({
     fontSize: 13,
     marginTop: 4,
   },
+  taglineCompact: {
+    fontSize: 11,
+    lineHeight: 13,
+    marginTop: 2,
+  },
   headerRight: {
     flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-end',
     gap: 6,
+  },
+  headerRightCompact: {
+    flex: 1,
+    rowGap: 6,
+    columnGap: 6,
+    paddingTop: 0,
   },
   statChip: {
     flexDirection: 'row',

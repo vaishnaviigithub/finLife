@@ -73,8 +73,8 @@ const BANK_CONCEPT = {
 };
 
 const BANKS = [
-  { id: 'sbi', name: 'SBI Student', emoji: '🏛️', hint: '₹0 min · 2.7% · Free ATM', color: C.blue, ifsc: 'SBIN0001234' },
-  { id: 'hdfc', name: 'HDFC Basic', emoji: '🏦', hint: '₹0 min · 3% · Best app', color: C.green, ifsc: 'HDFC0001234' },
+  { id: 'sbi', name: 'SBI Student', emoji: '🏛️', hint: 'Rs 0 min · 2.7% · Free ATM', color: C.blue, ifsc: 'SBIN0001234' },
+  { id: 'hdfc', name: 'HDFC Basic', emoji: '🏦', hint: 'Rs 0 min · 3% · Best app', color: C.green, ifsc: 'HDFC0001234' },
   { id: 'jupiter', name: 'Jupiter Neo', emoji: '📱', hint: 'Top app · No branch', color: C.yellow, ifsc: 'JUPT0001234' },
 ] as const;
 
@@ -87,7 +87,7 @@ const BANK_TUTORIAL_PAGES: TutorialPage[] = [
       { id: 'r', label: 'R', fullForm: 'Rate — annual interest %', meaning: 'How much the bank pays you per year.' },
     ],
     interactive: (onReady) => <BankFlowDemo onReady={onReady} />,
-    formula: 'Simple interest = P × R × T ÷ 100\n\n₹5,000 at 3% for 1 year = ₹150',
+    formula: 'Simple interest = P × R × T ÷ 100\n\nRs 5,000 at 3% for 1 year = Rs 150',
   },
   {
     title: 'KYC — WHY DOCUMENTS?',
@@ -214,7 +214,7 @@ export default function BankAccountLab({ chapterId }: { chapterId: string }) {
           onPress={() => { play('bad'); setQ2('trust'); showToast("It's the law — not about trust"); }}
         />
 
-        <Text style={styles.quizQ}>₹5,000 at 3% for 1 year earns?</Text>
+        <Text style={styles.quizQ}>Rs 5,000 at 3% for 1 year earns?</Text>
         <View style={styles.chipRow}>
           {[100, 150, 500].map((amt) => {
             const picked = q3 === String(amt);
@@ -222,7 +222,7 @@ export default function BankAccountLab({ chapterId }: { chapterId: string }) {
             return (
               <QuizChip
                 key={amt}
-                label={`₹${amt}`}
+                label={`Rs ${amt}`}
                 disabled={q3 === '150'}
                 state={state}
                 onPress={() => {
@@ -277,7 +277,7 @@ export default function BankAccountLab({ chapterId }: { chapterId: string }) {
         <LabHud wallet={5000} mood={70} age={15} />
         <View style={styles.pickHero}>
           <ArtifactImage source={ARTIFACTS.building} size={56} />
-          <Text style={styles.pickHeroText}>Three options. All ₹0 minimum balance for students.</Text>
+          <Text style={styles.pickHeroText}>Three options. All Rs 0 minimum balance for students.</Text>
         </View>
         {BANKS.map((b) => (
           <Pressable

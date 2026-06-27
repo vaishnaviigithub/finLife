@@ -65,15 +65,17 @@ export function buildAccelEvents(
   // 3. Stat changes — one at a time, with complete sentence
   if (next.cash !== prev.cash) {
     const delta = next.cash - prev.cash;
+    const override = choice.accelCaptions?.cash;
     events.push({
       kind: 'stat',
       title: 'CASH',
       emoji: '💰',
       label: 'CASH',
       text:
-        delta < 0
-          ? `You spent ₹${Math.abs(delta).toLocaleString('en-IN')} in cash.`
-          : `You gained ₹${delta.toLocaleString('en-IN')} in cash.`,
+        override ??
+        (delta < 0
+          ? `You spent Rs ${Math.abs(delta).toLocaleString('en-IN')} in cash.`
+          : `You gained Rs ${delta.toLocaleString('en-IN')} in cash.`),
       from: prev.cash,
       to: next.cash,
       format: 'inr',
@@ -84,20 +86,23 @@ export function buildAccelEvents(
   if (next.savings !== prev.savings) {
     const delta = next.savings - prev.savings;
     const principalChange = (choice.delta.savings ?? 0);
+    const override = choice.accelCaptions?.savings;
     let text = '';
-    if (principalChange > 0 && yrs > 0) {
+    if (override) {
+      text = override;
+    } else if (principalChange > 0 && yrs > 0) {
       const interest = delta - principalChange;
       if (interest > 0) {
-        text = `₹${principalChange.toLocaleString('en-IN')} added, then grew by ₹${interest.toLocaleString('en-IN')} from ${yrs}-yr compounding at 8%.`;
+        text = `Rs ${principalChange.toLocaleString('en-IN')} added, then grew by Rs ${interest.toLocaleString('en-IN')} from ${yrs}-yr compounding at 8%.`;
       } else {
-        text = `₹${principalChange.toLocaleString('en-IN')} added to your savings.`;
+        text = `Rs ${principalChange.toLocaleString('en-IN')} added to your savings.`;
       }
     } else if (principalChange < 0) {
-      text = `₹${Math.abs(principalChange).toLocaleString('en-IN')} pulled out of savings.`;
+      text = `Rs ${Math.abs(principalChange).toLocaleString('en-IN')} pulled out of savings.`;
     } else if (delta > 0) {
-      text = `Compounding alone added ₹${delta.toLocaleString('en-IN')} to your savings over ${yrs} year${yrs > 1 ? 's' : ''}.`;
+      text = `Compounding alone added Rs ${delta.toLocaleString('en-IN')} to your savings over ${yrs} year${yrs > 1 ? 's' : ''}.`;
     } else {
-      text = `Your savings shifted by ₹${delta.toLocaleString('en-IN')}.`;
+      text = `Your savings shifted by Rs ${delta.toLocaleString('en-IN')}.`;
     }
     events.push({
       kind: 'stat',
@@ -115,13 +120,16 @@ export function buildAccelEvents(
   if (next.debt !== prev.debt) {
     const delta = next.debt - prev.debt;
     const principalChange = (choice.delta.debt ?? 0);
+    const override = choice.accelCaptions?.debt;
     let text = '';
-    if (principalChange > 0) {
-      text = `You took on ₹${principalChange.toLocaleString('en-IN')} of new debt. It also grew over ${yrs}yr.`;
+    if (override) {
+      text = override;
+    } else if (principalChange > 0) {
+      text = `You took on Rs ${principalChange.toLocaleString('en-IN')} of new debt. It also grew over ${yrs}yr.`;
     } else if (delta > 0) {
-      text = `Existing debt grew by ₹${delta.toLocaleString('en-IN')} over time (unpaid interest).`;
+      text = `Existing debt grew by Rs ${delta.toLocaleString('en-IN')} over time (unpaid interest).`;
     } else {
-      text = `Debt shifted by ₹${delta.toLocaleString('en-IN')}.`;
+      text = `Debt shifted by Rs ${delta.toLocaleString('en-IN')}.`;
     }
     events.push({
       kind: 'stat',
@@ -156,15 +164,17 @@ export function buildAccelEvents(
 
   if (next.knowledge !== prev.knowledge) {
     const delta = next.knowledge - prev.knowledge;
+    const override = choice.accelCaptions?.knowledge;
     events.push({
       kind: 'stat',
       title: 'KNOWLEDGE',
       emoji: '🧠',
       label: 'LEARN',
       text:
-        delta > 0
+        override ??
+        (delta > 0
           ? `Knowledge +${delta}. You understand "${choice.concept}" a little better now.`
-          : `Knowledge ${delta}. Some confidence was lost.`,
+          : `Knowledge ${delta}. Some confidence was lost.`),
       from: prev.knowledge,
       to: next.knowledge,
       format: 'plain100',

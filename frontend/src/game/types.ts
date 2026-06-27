@@ -20,6 +20,19 @@ export type Choice = {
   consequenceText: string; // Beat 3 - what happened, in plain English
   lesson: string; // Beat 4 - the financial idea behind it
   concept: string; // Short tag like "Opportunity Cost" / "Compound Interest"
+  // Optional: scenario-authored captions for the accel/consequence stat cards.
+  // If present, these override the auto-generated narration.
+  accelCaptions?: {
+    cash?: string;
+    savings?: string;
+    debt?: string;
+    knowledge?: string;
+  };
+};
+
+export type Term = {
+  name: string;
+  definition: string;
 };
 
 export type Scenario = {
@@ -31,6 +44,12 @@ export type Scenario = {
   choices: Choice[];
   // years to fast-forward after this decision
   advanceYears: number;
+  // Optional CONCEPT PRIMER terms shown BEFORE the situation screen.
+  // Terms already in player's termsSeen are skipped automatically.
+  terms?: Term[];
+  // Optional: if true, savings/debt do NOT auto-compound during advanceYears.
+  // Use when the scenario authors exact end-of-year balances via choice.delta.
+  skipCompound?: boolean;
 };
 
 export type Chapter = {
@@ -76,4 +95,7 @@ export type GameState = {
   lastStreakDate: string | null;
   pendingLessonDate: string | null;
   termsLearned: string[];
+  // CONCEPT PRIMER — terms the player has already seen at least once.
+  // Used to skip cards on subsequent scenarios that reuse the same term.
+  termsSeen: string[];
 };

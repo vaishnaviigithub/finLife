@@ -377,7 +377,7 @@ export function LabHud({
         <HudChip label="AGE" value={`${age}`} color={C.yellow} />
       ) : null}
       {wallet !== undefined ? (
-        <HudChip label="WALLET" value={`₹${Math.round(wallet).toLocaleString('en-IN')}`} color={FL_GREEN} />
+        <HudChip label="WALLET" value={`Rs ${Math.round(wallet).toLocaleString('en-IN')}`} color={FL_GREEN} />
       ) : null}
       {mood !== undefined ? (
         <HudChip label="MOOD" value={`${Math.round(mood)}/100`} color={C.orange} />
@@ -416,7 +416,7 @@ export function LabStatBar({
       <View style={styles.statBarTrack}>
         <View style={[styles.statBarFill, { width: `${pct}%`, backgroundColor: color }]} />
       </View>
-      <Text style={styles.statBarVal}>{value}{max <= 100 && !label.includes('₹') ? `/${max}` : ''}</Text>
+      <Text style={styles.statBarVal}>{value}{max <= 100 && !label.includes('Rs ') ? `/${max}` : ''}</Text>
     </View>
   );
 }
@@ -429,7 +429,7 @@ export function LabNumericField({
   error,
   hint,
   wrongHint,
-  prefix = '₹',
+  prefix = 'Rs ',
   editable = true,
   large = false,
 }: {

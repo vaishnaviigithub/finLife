@@ -61,7 +61,7 @@ const EMI_TUTORIAL_PAGES: TutorialPage[] = [
         id: 'p',
         label: 'P',
         fullForm: 'Principal — the loan amount',
-        meaning: 'The actual price borrowed (e.g. ₹15,000 for the phone).',
+        meaning: 'The actual price borrowed (e.g. Rs 15,000 for the phone).',
       },
       {
         id: 'r',
@@ -81,7 +81,7 @@ const EMI_TUTORIAL_PAGES: TutorialPage[] = [
     title: 'THE FORMULA',
     subtitle: 'Banks use this to calculate your monthly payment',
     formula:
-      'EMI = P × r × (1+r)^n ÷ [(1+r)^n − 1]\n\nExample → ₹15,000 at 14% for 12 months:\nEMI = ₹1,334/month\nTotal = ₹1,334 × 12 = ₹16,008',
+      'EMI = P × r × (1+r)^n ÷ [(1+r)^n − 1]\n\nExample → Rs 15,000 at 14% for 12 months:\nEMI = Rs 1,334/month\nTotal = Rs 1,334 × 12 = Rs 16,008',
     body: 'You don\'t need to memorise this — just know: longer EMI + higher rate = more extra money.',
   },
   {
@@ -155,16 +155,16 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error).catch(() => {});
     if (!aOk) {
       setOfferStep(0);
-      showToast('Option A: pay full = just the MRP ₹15,000');
+      showToast('Option A: pay full = just the MRP Rs 15,000');
     } else if (!bEmiOk || !bTotOk) {
       setOfferStep(1);
-      showToast('Option B: add fees first, then calculate EMI on ₹15,588.82');
+      showToast('Option B: add fees first, then calculate EMI on Rs 15,588.82');
     } else if (!fineRead) {
       setOfferStep(2);
       showToast('Option C: read the fine print to find hidden fees');
     } else {
       setOfferStep(2);
-      showToast('Option C: MRP + ₹999 fee + ₹179.82 GST = ?');
+      showToast('Option C: MRP + Rs 999 fee + Rs 179.82 GST = ?');
     }
   };
 
@@ -230,9 +230,9 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
         <Text style={styles.compareIntro}>You cracked all three offers. Here&apos;s what they really cost:</Text>
         <LabPixelBars
           items={[
-            { label: 'PAY FULL', value: 15000, display: '₹15,000' },
-            { label: '6-MONTH EMI', value: 16165, display: '₹16,165' },
-            { label: '12-MONTH 0%', value: 16179, display: '₹16,179' },
+            { label: 'PAY FULL', value: 15000, display: 'Rs 15,000' },
+            { label: '6-MONTH EMI', value: 16165, display: 'Rs 16,165' },
+            { label: '12-MONTH 0%', value: 16179, display: 'Rs 16,179' },
           ]}
         />
         <Text style={styles.insight}>
@@ -248,7 +248,7 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
   return (
     <LabScreenShell
       title="NOVA X11"
-      subtitle={`Offer ${offerStep + 1}/3 · MRP ₹15,000`}
+      subtitle={`Offer ${offerStep + 1}/3 · MRP Rs 15,000`}
       onBack={back}
       footer={
         <View>
@@ -300,7 +300,7 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
       <View style={styles.phoneCard}>
         <Text style={styles.phoneEmoji}>📱</Text>
         <Text style={styles.phoneName}>NOVA X11</Text>
-        <Text style={styles.phoneMrp}>MRP ₹15,000</Text>
+        <Text style={styles.phoneMrp}>MRP Rs 15,000</Text>
       </View>
 
       <View style={styles.stepTabs}>
@@ -331,7 +331,7 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
                   amt === 15000 && aOk && styles.chipCorrect,
                 ]}
               >
-                <Text style={styles.chipText}>₹{amt.toLocaleString('en-IN')}</Text>
+                <Text style={styles.chipText}>Rs {amt.toLocaleString('en-IN')}</Text>
               </Pressable>
             ))}
           </View>
@@ -343,7 +343,7 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
             value={aTotal}
             onChange={setATotal}
             correct={aOk}
-            wrongHint="Pay full = ₹15,000 exactly. No fees on this option."
+            wrongHint="Pay full = Rs 15,000 exactly. No fees on this option."
           />
         </Animated.View>
       )}
@@ -352,19 +352,19 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
         <Animated.View entering={FadeInRight.duration(220)} style={styles.offerCard}>
           <Text style={styles.offerHeadline}>6-month EMI at 14% annual</Text>
           <View style={styles.feeBreakdown}>
-            <Text style={styles.feeLine}>Phone MRP          ₹15,000.00</Text>
-            <Text style={styles.feeLine}>+ Processing fee     ₹499.00</Text>
-            <Text style={styles.feeLine}>+ GST on fee          ₹89.82</Text>
-            <Text style={styles.feeLineBold}>Loan before EMI   ₹15,588.82</Text>
+            <Text style={styles.feeLine}>Phone MRP          Rs 15,000.00</Text>
+            <Text style={styles.feeLine}>+ Processing fee     Rs 499.00</Text>
+            <Text style={styles.feeLine}>+ GST on fee          Rs 89.82</Text>
+            <Text style={styles.feeLineBold}>Loan before EMI   Rs 15,588.82</Text>
           </View>
           <LabNumericField
             large
             label="Monthly EMI"
-            hint="Calculate EMI on ₹15,588.82 for 6 months"
+            hint="Calculate EMI on Rs 15,588.82 for 6 months"
             value={bEmi}
             onChange={setBEmi}
             correct={bEmiOk}
-            wrongHint="Try ~₹2,596/month (±₹20 is OK)"
+            wrongHint="Try ~Rs 2,596/month (±Rs 20 is OK)"
           />
           <LabNumericField
             large
@@ -373,7 +373,7 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
             value={bTotal}
             onChange={setBTotal}
             correct={bTotOk}
-            wrongHint="Try ~₹16,165 total (±₹20 is OK)"
+            wrongHint="Try ~Rs 16,165 total (±Rs 20 is OK)"
           />
         </Animated.View>
       )}
@@ -396,10 +396,10 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
                 ...0% interest promotional offer...
               </Text>
               <Text style={styles.fineDocHighlight}>
-                processing fee ₹999 applicable on all EMI plans
+                processing fee Rs 999 applicable on all EMI plans
               </Text>
               <Text style={styles.fineDocHighlight}>
-                GST ₹179.82 charged on processing fee
+                GST Rs 179.82 charged on processing fee
               </Text>
               <Text style={styles.fineDocText}>...terms and conditions apply...</Text>
             </View>
@@ -412,7 +412,7 @@ export default function EmiTrapLab({ chapterId }: { chapterId: string }) {
             onChange={setCTotal}
             correct={cOk}
             editable={fineRead}
-            wrongHint="15000 + 999 + 179.82 = ? (±₹20 is OK)"
+            wrongHint="15000 + 999 + 179.82 = ? (±Rs 20 is OK)"
           />
         </Animated.View>
       )}

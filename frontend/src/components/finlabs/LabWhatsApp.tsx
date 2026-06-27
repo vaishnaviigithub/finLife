@@ -238,7 +238,7 @@ export function ChatStatStrip({
   return (
     <View style={styles.statStrip}>
       {wallet !== undefined ? (
-        <Text style={styles.statItem}>💰 ₹{Math.round(wallet)}</Text>
+        <Text style={styles.statItem}>💰 Rs {Math.round(wallet)}</Text>
       ) : null}
       {social !== undefined ? (
         <Text style={styles.statItem}>👥 {Math.round(social)}</Text>

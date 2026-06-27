@@ -18,7 +18,7 @@ import * as Haptics from 'expo-haptics';
 import LabHeader from '@/src/components/finlabs/LabHeader';
 import { LabToast } from '@/src/components/finlabs/LabShared';
 import { getFinLabsChapter, FinLabsChapter, LabNode } from '@/src/finlabs/chapters';
-import { finLabsRoadmapHref, finLabsLabHref } from '@/src/finlabs/routes';
+import { finLabsLabHref } from '@/src/finlabs/routes';
 import { FL_BG, FL_GREEN, isLabFlagDone } from '@/src/finlabs/storage';
 import { C, FONT } from '@/src/ui/theme';
 import { play } from '@/src/game/audio';
@@ -215,6 +215,12 @@ function LabsCanvas({
             >
               {!unlocked ? (
                 <MaterialCommunityIcons name="lock" size={16} color="#666" />
+              ) : lab.icon ? (
+                <MaterialCommunityIcons
+                  name={lab.icon as keyof typeof MaterialCommunityIcons.glyphMap}
+                  size={25}
+                  color="#0D0D0D"
+                />
               ) : (
                 <Text style={styles.nodeEmoji}>{lab.emoji}</Text>
               )}

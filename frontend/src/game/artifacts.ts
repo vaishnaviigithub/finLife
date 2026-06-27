@@ -56,18 +56,21 @@ const SCENARIO_ARTIFACTS: Record<string, ArtifactKey> = {
   c3s5: 'wallet',
   c3s6: 'laptopBooks',
   c3s7: 'moneyStack',
+  c4s1: 'moneyStack',
 };
 
 const CHAPTER_BG: Record<string, ArtifactKey> = {
   childhood: 'childhood',
   teenage: 'city',
   college: 'college',
+  early_career: 'building',
 };
 
 const CHAPTER_ACCENT: Record<string, ArtifactKey> = {
   childhood: 'baby',
   teenage: 'student',
   college: 'laptopBooks',
+  early_career: 'job',
 };
 
 const COMING_SOON_ARTIFACTS: ArtifactKey[] = ['job', 'building', 'budgeti', 'wallet'];

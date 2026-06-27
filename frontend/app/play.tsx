@@ -26,14 +26,15 @@ import { play } from '@/src/game/audio';
 import ArtifactImage from '@/src/components/ArtifactImage';
 import { ARTIFACTS } from '@/src/game/artifacts';
 import { pickTerm } from '@/src/game/streaks';
+import PrimerScreen from '@/src/components/PrimerScreen';
 
 const COLORS = [C.green, C.blue, C.yellow, C.orange];
 
-type Phase = 'situation_decision' | 'consequence' | 'lesson';
+type Phase = 'primer' | 'situation_decision' | 'consequence' | 'lesson';
 
 export default function Play() {
   const router = useRouter();
-  const { state, applyChoice, completeChapter, completeStreakTerm } = useGame();
+  const { state, applyChoice, completeChapter, completeStreakTerm, markTermsSeen } = useGame();
 
   const chapter = useMemo(
     () => CHAPTERS.find((c) => c.id === state.chapterId) ?? null,
@@ -48,7 +49,25 @@ export default function Play() {
 
   const totalScenarios = state.chapterScenarioIds.length;
 
-  const [phase, setPhase] = useState<Phase>('situation_decision');
+  // Compute the unseen primer terms for the current scenario (terms already
+  // shown in earlier scenarios are filtered out automatically).
+  const unseenTerms = useMemo(() => {
+    if (!scenario?.terms || scenario.terms.length === 0) return [];
+    const seen = new Set(state.termsSeen);
+    return scenario.terms.filter((t) => !seen.has(t.name));
+  }, [scenario, state.termsSeen]);
+
+  const [phase, setPhase] = useState<Phase>(
+    unseenTerms.length > 0 ? 'primer' : 'situation_decision',
+  );
+
+  // Safety: if phase is 'primer' but there are no unseen terms to show, fall
+  // through to the situation/decision immediately.
+  React.useEffect(() => {
+    if (phase === 'primer' && unseenTerms.length === 0) {
+      setPhase('situation_decision');
+    }
+  }, [phase, unseenTerms.length]);
   const [accelEvents, setAccelEvents] = useState<AccelEvent[]>([]);
   const [lastChoice, setLastChoice] = useState<Choice | null>(null);
   const [lastLessonStats, setLastLessonStats] = useState<LessonStats | null>(null);
@@ -120,7 +139,11 @@ export default function Play() {
             if (isLast && chapter) {
               finishChapter(chapter);
             } else {
-              setPhase('situation_decision');
+              // Next scenario: if it has unseen primer terms, show primer first.
+              const nextScenario = chapter?.scenarios[state.scenarioIndex];
+              const seen = new Set(state.termsSeen);
+              const nextUnseen = nextScenario?.terms?.filter((t) => !seen.has(t.name)) ?? [];
+              setPhase(nextUnseen.length > 0 ? 'primer' : 'situation_decision');
               setLastChoice(null);
               setLastLessonStats(null);
               setAccelEvents([]);
@@ -165,6 +188,23 @@ export default function Play() {
             <Text style={styles.emptyHint}>▶ SEE SUMMARY</Text>
           </Pressable>
         </SafeAreaView>
+        {streakModal}
+      </>
+    );
+  }
+
+  // CONCEPT PRIMER — shown before SITUATION whenever the scenario introduces
+  // financial terms the player has not seen yet.
+  if (phase === 'primer' && unseenTerms.length > 0) {
+    return (
+      <>
+        <PrimerScreen
+          terms={unseenTerms}
+          onContinue={() => {
+            markTermsSeen(unseenTerms.map((t) => t.name));
+            setPhase('situation_decision');
+          }}
+        />
         {streakModal}
       </>
     );

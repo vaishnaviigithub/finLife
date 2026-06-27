@@ -78,9 +78,9 @@ export default function Summary() {
           {/* Stats grid */}
           <View style={styles.statsGrid}>
             <StatBox label="AGE" value={`${state.age}`} icon="cake-variant" color={C.yellow} />
-            <StatBox label="CASH" value={`₹${state.cash.toLocaleString('en-IN')}`} icon="cash" color={C.green} />
-            <StatBox label="SAVED" value={`₹${state.savings.toLocaleString('en-IN')}`} icon="piggy-bank" color={C.blue} />
-            <StatBox label="DEBT" value={`₹${state.debt.toLocaleString('en-IN')}`} icon="credit-card-minus" color={C.red} />
+            <StatBox label="CASH" value={`Rs ${state.cash.toLocaleString('en-IN')}`} icon="cash" color={C.green} />
+            <StatBox label="SAVED" value={`Rs ${state.savings.toLocaleString('en-IN')}`} icon="piggy-bank" color={C.blue} />
+            <StatBox label="DEBT" value={`Rs ${state.debt.toLocaleString('en-IN')}`} icon="credit-card-minus" color={C.red} />
             <StatBox label="MOOD" value={`${state.happiness}/100`} icon="emoticon-happy-outline" color={C.orange} />
             <StatBox label="LEARN" value={`${state.knowledge}/100`} icon="brain" color="#9B59B6" />
           </View>

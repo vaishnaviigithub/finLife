@@ -47,6 +47,7 @@ const INITIAL: GameState = {
   lastStreakDate: null,
   pendingLessonDate: null,
   termsLearned: [],
+  termsSeen: [],
   financialHealthScore: 50,
   consecutiveBadDecisions: 0,
   chapterScenarioIds: [],
@@ -61,6 +62,7 @@ type Action =
   | { type: 'APPLY_CHOICE'; choice: Choice; scenario: Scenario }
   | { type: 'COMPLETE_CHAPTER'; chapter: Chapter }
   | { type: 'COMPLETE_STREAK_TERM'; termId: string }
+  | { type: 'MARK_TERMS_SEEN'; termNames: string[] }
   | { type: 'COMPLETE_INTRO'; playerName: string }
   | { type: 'CLEAR_RECENTLY_ADDED' };
 
@@ -131,7 +133,7 @@ function reducer(state: GameState, action: Action): GameState {
         chapterId: ch.id,
         scenarioIndex: 0,
         age: Math.max(state.age, startAge),
-        cash: state.cash + (ch.index === 1 ? 500 : ch.index === 2 ? 5000 : 20000),
+        cash: state.cash + (ch.index === 1 ? 500 : ch.index === 2 ? 5000 : ch.index === 3 ? 20000 : ch.index === 4 ? 100000 : 20000),
         chapterScenarioIds: coreIds,
         recentlyAddedScenarioIds: [],
         consecutiveBadDecisions: 0,
@@ -154,8 +156,12 @@ function reducer(state: GameState, action: Action): GameState {
           { age: s.age, text: `${action.scenario.title}: ${action.choice.label}` },
         ],
       };
-      // advance time + compound
-      s = compound(s, action.scenario.advanceYears);
+      // advance time + compound (scenarios can opt out of auto-compounding)
+      if (action.scenario.skipCompound) {
+        s = { ...s, age: s.age + action.scenario.advanceYears };
+      } else {
+        s = compound(s, action.scenario.advanceYears);
+      }
       // Apply any future deltas due at/by the new age
       // (For simplicity we trigger if scheduled futureAge <= new age and not yet applied)
       // We add a flag _future_<choiceid> to avoid double-trigger
@@ -249,6 +255,11 @@ function reducer(state: GameState, action: Action): GameState {
         pendingLessonDate: lessonDoneToday ? null : state.pendingLessonDate,
       };
     }
+    case 'MARK_TERMS_SEEN': {
+      const next = new Set(state.termsSeen);
+      for (const n of action.termNames) next.add(n);
+      return { ...state, termsSeen: Array.from(next) };
+    }
     default:
       return state;
   }
@@ -260,6 +271,7 @@ type Ctx = {
   applyChoice: (choice: Choice, scenario: Scenario) => void;
   completeChapter: (ch: Chapter) => void;
   completeStreakTerm: (termId: string) => void;
+  markTermsSeen: (termNames: string[]) => void;
   reset: () => void;
   completeIntro: (playerName: string) => void;
   clearRecentlyAdded: () => void;
@@ -320,6 +332,7 @@ export function GameProvider({ children }: { children: React.ReactNode }) {
       applyChoice: (choice, scenario) => dispatch({ type: 'APPLY_CHOICE', choice, scenario }),
       completeChapter: (ch) => dispatch({ type: 'COMPLETE_CHAPTER', chapter: ch }),
       completeStreakTerm: (termId) => dispatch({ type: 'COMPLETE_STREAK_TERM', termId }),
+      markTermsSeen: (termNames) => dispatch({ type: 'MARK_TERMS_SEEN', termNames }),
       reset: () => dispatch({ type: 'RESET' }),
       completeIntro: (playerName) => dispatch({ type: 'COMPLETE_INTRO', playerName }),
       clearRecentlyAdded: () => dispatch({ type: 'CLEAR_RECENTLY_ADDED' }),

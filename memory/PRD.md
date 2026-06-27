@@ -2,9 +2,19 @@
 
 A mobile-first **financial life simulator** in 8-bit / Minecraft pixel-art style. Players make decisions at every life stage and watch decades of compound consequences unfold in seconds.
 
-## Current Status: MVP v0.3 — 3 chapters polished + cinematic 7-beat onboarding
+## Current Status: MVP v0.4 — Concept Primer + Chapter 4 (Early Career) seed scenario
 
-### Implemented
+### Implemented (delta — Jan 2026)
+- **Reusable CONCEPT PRIMER screen** (`src/components/PrimerScreen.tsx`) — shown BEFORE every scenario's SITUATION whenever it introduces unseen financial terms. Layout: small yellow uppercase "BEFORE YOU DECIDE" header, single continuous dark card with one block per term (large bold white name + light-grey definition), thin divider between terms, no icons, generous spacing, full-width green "GOT IT →" button.
+- **`Scenario.terms: {name, definition}[]`** field added — every future Ch.4–7 scenario uses this to declare its primer cards.
+- **`GameState.termsSeen`** + `MARK_TERMS_SEEN` reducer action — terms shown once are automatically skipped on later scenarios that reuse them.
+- **`Choice.accelCaptions`** — optional per-choice override for cash / savings / debt / knowledge consequence narration, so scenario authors can supply exact captions matching the brief.
+- **`Scenario.skipCompound`** — opt-out from the 8% savings / 4% debt auto-compound during `advanceYears`, used when the scenario authors exact end-of-year balances.
+- **Phase order updated** in `app/play.tsx` to: PRIMER → SITUATION → DECISION → CONSEQUENCE → LESSON. The primer also re-fires on the next scenario inside a chapter if it introduces new terms.
+- **Chapter 4 "EARLY CAREER"** with the seed scenario `c4s1 — THE ₹89,000 DECISION` (age 25): 4 primer terms (FD, Equity Mutual Fund, STP, PPF), 4 choices, exact spec-matched cash / savings / knowledge captions, +8 knowledge each.
+- Chapter 4 wired into roadmap artifacts (`getChapterBackground/Accent`) and given a ₹1,00,000 starting cash top-up in `START_CHAPTER` so the ₹89,000 transaction reads cleanly on the HUD.
+
+### Implemented (previous)
 - **Cinematic 7-beat onboarding intro** (`app/intro.tsx`) — plays on first launch, gated by `state.introCompleted`. A skip button is always visible top-right with a confirmation modal that still funnels users into the name-entry beat (never skips identity).
   - **Beat 1 — Hook**: Rising glowing ₹ symbols, word-by-word tagline "Everyone earns money. Almost nobody is taught what to do with it.", then a chunky 8-bit glass-shatter that reveals the pixel village world with the avatar peeking through.
   - **Beat 2 — What is Personal Finance?**: Pixel-art TV cycles through 6 animated icons (Earning, Spending, Saving, Investing, Protecting, Planning), arranges them in a circle, then displays the definition. Avatar reacts with a lightbulb.

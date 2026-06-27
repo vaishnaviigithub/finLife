@@ -40,46 +40,46 @@ type RoundDef = {
 };
 
 const TUTORIAL: RoundDef = {
-  customerSays: 'One samosa please! Here\'s ₹20.',
+  customerSays: 'One samosa please! Here\'s Rs 20.',
   itemLabel: 'SAMOSA',
   itemCost: 12,
   paid: 20,
   correctChange: 8,
-  hintOnWrong: '₹20 − ₹12 = ₹8',
+  hintOnWrong: 'Rs 20 − Rs 12 = Rs 8',
 };
 
 const REAL_ROUNDS: RoundDef[] = [
   {
-    customerSays: 'One samosa please! Here\'s ₹20.',
+    customerSays: 'One samosa please! Here\'s Rs 20.',
     itemLabel: 'SAMOSA',
     itemCost: 12,
     paid: 20,
     correctChange: 8,
-    hintOnWrong: '₹20 − ₹12 = ₹8',
+    hintOnWrong: 'Rs 20 − Rs 12 = Rs 8',
   },
   {
-    customerSays: 'Two juices please! Here\'s ₹50.',
+    customerSays: 'Two juices please! Here\'s Rs 50.',
     itemLabel: '2 JUICES',
     itemCost: 30,
     paid: 50,
     correctChange: 20,
-    hintOnWrong: '₹50 − ₹30 = ₹20',
+    hintOnWrong: 'Rs 50 − Rs 30 = Rs 20',
   },
   {
-    customerSays: 'Biscuits and chai please! Here\'s ₹25.',
+    customerSays: 'Biscuits and chai please! Here\'s Rs 25.',
     itemLabel: 'SNACK SET',
     itemCost: 15,
     paid: 25,
     correctChange: 10,
-    hintOnWrong: '₹8 + ₹7 = ₹15 · ₹25 − ₹15 = ₹10',
+    hintOnWrong: 'Rs 8 + Rs 7 = Rs 15 · Rs 25 − Rs 15 = Rs 10',
   },
   {
-    customerSays: 'Three sandwiches! We pooled ₹70.',
+    customerSays: 'Three sandwiches! We pooled Rs 70.',
     itemLabel: '3 SANDWICH',
     itemCost: 66,
     paid: 70,
     correctChange: 4,
-    hintOnWrong: '₹22 × 3 = ₹66 · ₹70 − ₹66 = ₹4',
+    hintOnWrong: 'Rs 22 × 3 = Rs 66 · Rs 70 − Rs 66 = Rs 4',
   },
 ];
 
@@ -161,7 +161,7 @@ export default function ChangeMakerLab({ chapterId }: Props) {
     }
     if (pickedTotal !== needed) {
       play('bad');
-      setHint(`Coins = ₹${pickedTotal}. Need exactly ₹${needed}.`);
+      setHint(`Coins = Rs ${pickedTotal}. Need exactly Rs ${needed}.`);
       return;
     }
 
@@ -217,7 +217,7 @@ export default function ChangeMakerLab({ chapterId }: Props) {
           </View>
           <DialogBox
             speaker="THE DEAL"
-            text="School is out. Aunty next door runs a samosa stall and promised you ₹50 for every hour you help during summer vacation. First job: give the right change — fast and accurate."
+            text="School is out. Aunty next door runs a samosa stall and promised you Rs 50 for every hour you help during summer vacation. First job: give the right change — fast and accurate."
           />
           <View style={styles.storyBullets}>
             <Text style={styles.bullet}>① Customer pays more than the item</Text>
@@ -250,8 +250,8 @@ export default function ChangeMakerLab({ chapterId }: Props) {
             <Text style={styles.scoreDisplay}>{score} / 4 CUSTOMERS</Text>
             <View style={styles.earnBox}>
               <Text style={styles.earnLabel}>PRACTICE EARNINGS</Text>
-              <Text style={styles.earnValue}>₹{earned}</Text>
-              <Text style={styles.earnSub}>Aunty pays ₹50/hr · you handled {score} orders cleanly</Text>
+              <Text style={styles.earnValue}>Rs {earned}</Text>
+              <Text style={styles.earnSub}>Aunty pays Rs 50/hr · you handled {score} orders cleanly</Text>
             </View>
             <View style={styles.tagBox}>
               <Text style={styles.tagText}>{getScoreTag(score)}</Text>
@@ -286,7 +286,7 @@ export default function ChangeMakerLab({ chapterId }: Props) {
               <Text style={styles.successEmoji}>✓</Text>
               <Text style={styles.successTitle}>FIRST CUSTOMER SERVED</Text>
               <Text style={styles.successText}>
-                ₹20 paid − ₹12 samosa = ₹8 change. You typed 8 and handed ₹5 + ₹1 + ₹1 + ₹1. Aunty
+                Rs 20 paid − Rs 12 samosa = Rs 8 change. You typed 8 and handed Rs 5 + Rs 1 + Rs 1 + Rs 1. Aunty
                 nodded. Now serve four real customers.
               </Text>
             </View>
@@ -317,7 +317,7 @@ export default function ChangeMakerLab({ chapterId }: Props) {
         </Pressable>
         <View style={styles.stallHeaderCenter}>
           <Text style={styles.stallHeaderTitle}>CHANGE MAKER</Text>
-          <Text style={styles.stallHeaderSub}>{roundLabel} · ₹50/HR JOB</Text>
+          <Text style={styles.stallHeaderSub}>{roundLabel} · Rs 50/HR JOB</Text>
         </View>
         {!isTutorial ? (
           <View style={styles.scoreChip}>

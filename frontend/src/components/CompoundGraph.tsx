@@ -77,7 +77,7 @@ export default function CompoundGraph({ from, to, years, width = 320, height = 9
         })}
       </View>
       <Text style={s.cap}>
-        ₹{Math.round(from).toLocaleString('en-IN')} → ₹{Math.round(to).toLocaleString('en-IN')} over {years} yr
+        Rs {Math.round(from).toLocaleString('en-IN')} → Rs {Math.round(to).toLocaleString('en-IN')} over {years} yr
       </Text>
     </View>
   );

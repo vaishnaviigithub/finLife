@@ -106,7 +106,7 @@ export default function GstBillCalculator({ items, answers, tolerance = 1, onCom
         {items.map((it) => (
           <View key={it.label} style={styles.itemRow}>
             <Text style={styles.itemName}>{it.label}</Text>
-            <Text style={styles.itemPrice}>₹{it.price}</Text>
+            <Text style={styles.itemPrice}>Rs {it.price}</Text>
           </View>
         ))}
         <View style={styles.divider} />
@@ -125,7 +125,7 @@ export default function GstBillCalculator({ items, answers, tolerance = 1, onCom
             >
               <Text style={styles.fieldLabel}>{f.label}</Text>
               <Text style={styles.fieldVal}>
-                ₹{values[f.key] || '—'}
+                Rs {values[f.key] || '—'}
               </Text>
               {st === 'ok' ? <Text style={styles.fieldMark}>✓</Text> : null}
               {st === 'bad' ? <Text style={styles.fieldMarkBad}>✗</Text> : null}
@@ -138,7 +138,7 @@ export default function GstBillCalculator({ items, answers, tolerance = 1, onCom
         <Text style={styles.calcHint}>{FIELDS.find((f) => f.key === active)?.hint}</Text>
         <View style={styles.display}>
           <Text style={styles.displayLabel}>{FIELDS.find((f) => f.key === active)?.label}</Text>
-          <Text style={styles.displayVal}>₹{display || '0'}</Text>
+          <Text style={styles.displayVal}>Rs {display || '0'}</Text>
         </View>
 
         <View style={styles.keypad}>

@@ -3,6 +3,7 @@ export type LabNode = {
   route: string;
   title: string;
   emoji: string;
+  icon?: string;
   subtitle: string;
   doneKey: string;
   requiresDoneKey?: string;
@@ -70,7 +71,7 @@ export const FINLABS_CHAPTERS: Record<string, FinLabsChapter> = {
         route: 'peer',
         title: 'PEER PRESSURE',
         emoji: '👥',
-        subtitle: '₹800. Social score is real.',
+        subtitle: 'Rs 800. Social score is real.',
         doneKey: 'finlab_teenage_peer_done',
         requiresDoneKey: 'finlab_teenage_bank_done',
       },
@@ -91,6 +92,23 @@ export const FINLABS_CHAPTERS: Record<string, FinLabsChapter> = {
         subtitle: 'Decode the bill.',
         doneKey: 'finlab_teenage_gst_done',
         requiresDoneKey: 'finlab_teenage_skills_done',
+      },
+    ],
+  },
+  early_career: {
+    chapterId: 'early_career',
+    title: 'EARLY CAREER',
+    subtitle: 'Practice Zone Â· No consequences, all learning',
+    landscape: 'CITY',
+    labs: [
+      {
+        id: 'itr',
+        route: 'itr',
+        title: 'FILING YOUR ITR',
+        icon: 'file-document-edit',
+        emoji: 'ðŸ§¾',
+        subtitle: 'Claim your refund.',
+        doneKey: 'finlab_firstjob_itr_done',
       },
     ],
   },

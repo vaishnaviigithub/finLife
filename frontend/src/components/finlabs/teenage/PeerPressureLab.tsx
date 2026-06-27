@@ -67,7 +67,7 @@ const PEER_TUTORIAL: TutorialPage[] = [
       },
     ],
     interactive: (onReady) => <OpportunityForkDemo onReady={onReady} />,
-    formula: '₹350/week × 52 = ₹18,200/year saved if you skip every movie',
+    formula: 'Rs 350/week × 52 = Rs 18,200/year saved if you skip every movie',
   },
   {
     title: 'IT STARTS IN THE GROUP CHAT',
@@ -164,7 +164,7 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
     friendSays('rohan', 'new movie dropped — show at 3 PM!');
     await new Promise((r) => setTimeout(r, 800));
     await showTyping('arjun', 600);
-    friendSays('arjun', '₹250 ticket + ₹80 snacks each?? 🍿');
+    friendSays('arjun', 'Rs 250 ticket + Rs 80 snacks each?? 🍿');
   }, [friendSays]);
 
   useEffect(() => {
@@ -197,7 +197,7 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
   useEffect(() => {
     if (phase === 'sat' && step === 3 && !bdaySent.current) {
       bdaySent.current = true;
-      const t = setTimeout(() => friendSays('priya', 'impromptu bday at CCD 🎂 ₹200 each?'), 500);
+      const t = setTimeout(() => friendSays('priya', 'impromptu bday at CCD 🎂 Rs 200 each?'), 500);
       return () => clearTimeout(t);
     }
   }, [phase, step, friendSays]);
@@ -253,8 +253,8 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
   const foodOverlay =
     step === 1 && goingMovie ? (
       <Animated.View entering={FadeInUp} style={styles.menuPanel}>
-        <Text style={styles.menuTitle}>🍔 FOOD COURT · Budget ₹200</Text>
-        <Text style={styles.menuTotal}>Your order: ₹{orderTotal} / ₹200</Text>
+        <Text style={styles.menuTitle}>🍔 FOOD COURT · Budget Rs 200</Text>
+        <Text style={styles.menuTotal}>Your order: Rs {orderTotal} / Rs 200</Text>
         <View style={styles.menuGrid}>
           {MENU.map((m) => {
             const canAdd = orderTotal + m.price <= 200;
@@ -267,7 +267,7 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
                 style={[styles.menuItem, !canAdd && styles.menuOff, count > 0 && styles.menuSel]}
               >
                 <Text style={styles.menuItemText}>{m.label}</Text>
-                <Text style={styles.menuPrice}>₹{m.price}</Text>
+                <Text style={styles.menuPrice}>Rs {m.price}</Text>
                 {count > 0 ? <Text style={styles.menuCount}>×{count}</Text> : null}
               </Pressable>
             );
@@ -277,7 +277,7 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
           onPress={() => {
             setWallet((w) => w - orderTotal);
             setMood((m) => m + order.length * 3);
-            playerSays(`Ordered food · ₹${orderTotal} 🍔`);
+            playerSays(`Ordered food · Rs ${orderTotal} 🍔`);
             setTimeout(() => friendSays('rohan', 'nice order 😋 see u at the movie'), 400);
             setStep(2);
           }}
@@ -295,14 +295,14 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
       <ChatQuickReplies
         options={[
           {
-            label: "I'm in! ₹330 total 🎬",
+            label: "I'm in! Rs 330 total 🎬",
             color: FL_GREEN,
             onPress: () => {
               setWallet((w) => w - 330);
               setMood((m) => m + 8);
               setSocial((s) => s + 10);
               setGoingMovie(true);
-              playerSays("I'm in! ₹330 total 🎬");
+              playerSays("I'm in! Rs 330 total 🎬");
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
               setTimeout(() => {
                 friendSays('priya', 'yayy see u at 1 PM food court first!');
@@ -335,7 +335,7 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
           options={[
             ...(wallet >= 1299
               ? [{
-                  label: 'Buy jacket ₹1,299 🧥',
+                  label: 'Buy jacket Rs 1,299 🧥',
                   color: C.red,
                   onPress: () => {
                     setWallet((w) => w - 1299);
@@ -348,12 +348,12 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
               : []),
             ...(wallet >= 699
               ? [{
-                  label: 'Cheaper jacket ₹699',
+                  label: 'Cheaper jacket Rs 699',
                   color: C.yellow,
                   onPress: () => {
                     setWallet((w) => w - 699);
                     setMood((m) => m + 6);
-                    playerSays('Getting the ₹699 one');
+                    playerSays('Getting the Rs 699 one');
                     setStep(3);
                   },
                 }]
@@ -377,13 +377,13 @@ export default function PeerPressureLab({ chapterId }: { chapterId: string }) {
           wallet >= 200
             ? [
                 {
-                  label: 'Ok coming! ₹200 🎂',
+                  label: 'Ok coming! Rs 200 🎂',
                   color: FL_GREEN,
                   onPress: () => {
                     setWallet((w) => w - 200);
                     setSocial((s) => s + 8);
                     setMood((m) => m + 6);
-                    playerSays('Ok coming! ₹200 🎂');
+                    playerSays('Ok coming! Rs 200 🎂');
                     play('win');
                     setTimeout(() => setPhase('report'), 800);
                   },
