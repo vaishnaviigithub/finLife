@@ -1,11 +1,11 @@
 # FinLife 
 ### Learn finance by living it. Not memorizing it.
 
-web app link:https://finlife-game.netlify.app/
+web app link:https://finlifee.netlify.app/
 
 mobile app link:https://expo.dev/accounts/vaishnavichada/projects/finlife/builds/50ca4e5e-742f-413e-a69f-47ce154ab115
 
-live demo link:https://www.youtube.com/watch?v=SwY79C_uHVY 
+live demo link:https://www.youtube.com/watch?v=aCkf32jQlSA&
 
 **FinLife** is a mobile-first financial life simulator that transforms financial literacy from passive learning into an interactive experience. Instead of reading about budgeting, loans, investments, or fraud, players **live** through them.
 
@@ -67,6 +67,15 @@ The simulation dynamically updates:
 
 Players immediately understand the long-term impact of every decision.
 
+# FinLabs
+Learning finance doesn't stop with the life simulation. That's where FinLabs comes in.
+In the main game, you play through someone's life Childhood, Teenage, College in order, story-driven. But financial literacy doesn't actually work like a story.
+FinLabs is our hands-on financial playground  a practice zone tied to each chapter you've completed, where users get to actually do real-world financial tasks instead of just choosing between dialogue options.
+
+# FinPedia
+FinPedia is where users can deepen their understanding.
+Think of it as an interactive financial encyclopedia designed specifically for beginners.
+Instead of overwhelming users with complex jargon, FinPedia explains financial concepts in simple, easy-to-understand language with real-life examples. Whether it's understanding what a SIP is, how compound interest works, why your credit score matters, or the difference between term insurance and health insurance, every topic is broken down into bite-sized lessons and they get to attempt a quiz after unlocking every 5 terms.
 # Technology Stack
 
 | Layer | Technology |
